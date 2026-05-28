@@ -2,9 +2,46 @@
 
 For the next agent (or future-Bar). Itay bought a domain at GoDaddy. This file
 prepares the swap from the current GitHub Pages subpath URL
-(`https://barmoshe.github.io/itay-shechter-portfolio/`) to the custom domain.
-Nothing here has been applied yet, because the domain string is not in the repo
-and the DNS + Pages settings live outside it.
+(`https://barmoshe.github.io/itay-shechter-portfolio/`) to the custom domain
+`itayshechter.com`.
+
+## Status at this commit (read me first)
+
+The domain is **`itayshechter.com`** (locked in 2026-05-28). The code-side
+edits (Phase 4 below) are **already pre-staged on the local branch
+`feat/custom-domain-itayshechter-com`**, commit `95d45db chore(domain): prep
+custom domain itayshechter.com`. That branch is **unpushed and not merged**;
+it deliberately waits for the manual setup steps (Phases 1-3) to finish
+first, so the deploy that lands the code edits happens at the same moment
+DNS turns green.
+
+**To finish the swap, in order:**
+
+1. Do Phases 1, 2, 3 below (GitHub UI -> verify -> GoDaddy DNS) by hand. The
+   pre-staged branch covers Phase 4 already; do **not** redo those edits.
+2. Re-render `public/img/og.jpg` with the new footer. The pre-stage commit
+   edited `scripts/og-card.html` to say `itayshechter.com`, but the rendered
+   `og.jpg` still carries the old `barmoshe.github.io/itay-shechter-portfolio`
+   footer because Playwright was not installed locally when the branch was
+   prepped. From a host that has Playwright + Chromium:
+   ```bash
+   cd ~/itay-shechter-portfolio
+   git checkout feat/custom-domain-itayshechter-com
+   node scripts/render-og.mjs   # rewrites public/img/og.jpg (1200x630)
+   git add public/img/og.jpg && git commit --amend --no-edit
+   ```
+3. Merge `feat/custom-domain-itayshechter-com` to `main` and push.
+   GitHub Actions deploys and the site comes up at `https://itayshechter.com/`.
+4. Tick **Enforce HTTPS** once the checkbox enables (Phase 6).
+
+**To abandon and roll back:** the branch is unpushed, so deleting it
+discards everything; `main` is unchanged.
+
+---
+
+(Phases below are the canonical recipe - kept current even after this swap
+ships, since a future domain change or troubleshooting pass needs the same
+playbook.)
 
 This playbook follows GitHub's official Pages docs on
 [Configuring a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
