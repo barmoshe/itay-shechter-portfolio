@@ -2,7 +2,7 @@
 //
 // IMPORTANT: this file mirrors Itay's standalone HTML. When Itay sends an
 // updated standalone.html, regenerate this file with the digest skill:
-//   npm run digest -- /path/to/itay-shekter-portfolio-standalone.html
+//   npm run digest -- /path/to/itay-shechter-portfolio-standalone.html
 // Hand edits here will be overwritten on the next digest, so prefer editing
 // the standalone HTML and re-running the digest.
 
@@ -436,7 +436,7 @@ export const content = {
     ] as ContactLink[],
   },
 
-  footer: '© 2026 · Itay Shekter · Social Media Lead',
+  footer: '© 2026 · Itay Shechter · Social Media Lead',
 } as const;
 
 export type Content = typeof content;

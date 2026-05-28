@@ -1,6 +1,6 @@
-# CLAUDE.md — itay-shekter-portfolio
+# CLAUDE.md — itay-shechter-portfolio
 
-React mirror of Itay Shekter's portfolio. Vite + React 19 + TypeScript, deployed
+React mirror of Itay Shechter's portfolio. Vite + React 19 + TypeScript, deployed
 to GitHub Pages. See `README.md` for the full picture.
 
 > **For the next agent:** this repo follows a deliberate method, the
@@ -53,4 +53,4 @@ npm run lint && npm run build
 
 Push to `main` → `.github/workflows/deploy.yml` lints, builds, publishes to
 Pages. One-time: repo Settings → Pages → Source → GitHub Actions. Live at
-`https://barmoshe.github.io/itay-shekter-portfolio/`.
+`https://barmoshe.github.io/itay-shechter-portfolio/`.

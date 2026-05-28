@@ -1,6 +1,6 @@
 ---
 name: digest-standalone
-description: Sync this React site to Itay's standalone HTML. Use when the user has a new or updated itay-shekter-portfolio-standalone.html to import, says "digest the standalone", "sync from Itay", "Itay sent a new version", or wants the React mirror to match the HTML source of truth.
+description: Sync this React site to Itay's standalone HTML. Use when the user has a new or updated itay-shechter-portfolio-standalone.html to import, says "digest the standalone", "sync from Itay", "Itay sent a new version", or wants the React mirror to match the HTML source of truth.
 ---
 
 # digest-standalone
@@ -33,7 +33,7 @@ Itay edits standalone.html  ─▶  you receive the file  ─▶  /digest-standa
 
 1. **Run the script** to extract images and get a structural inventory:
    ```
-   npm run digest -- /absolute/path/to/itay-shekter-portfolio-standalone.html
+   npm run digest -- /absolute/path/to/itay-shechter-portfolio-standalone.html
    ```
    It writes `public/img/hero.jpg`, `public/img/work-1.jpg`,
    `public/img/work-2.jpg` (document order) and prints: counts of timeline items,

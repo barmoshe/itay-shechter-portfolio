@@ -1,6 +1,6 @@
-# itay-shekter-portfolio
+# itay-shechter-portfolio
 
-A React mirror of Itay Shekter's portfolio. Vite + React 19 + TypeScript,
+A React mirror of Itay Shechter's portfolio. Vite + React 19 + TypeScript,
 deployed to GitHub Pages.
 
 ## The model: standalone HTML is the source of truth
@@ -37,10 +37,10 @@ npm run preview    # serve the production build
 
 ## Syncing from Itay's HTML
 
-When Itay sends an updated `itay-shekter-portfolio-standalone.html`:
+When Itay sends an updated `itay-shechter-portfolio-standalone.html`:
 
 ```bash
-npm run digest -- /path/to/itay-shekter-portfolio-standalone.html
+npm run digest -- /path/to/itay-shechter-portfolio-standalone.html
 ```
 
 This extracts the images and prints a structural inventory. Then ask Claude to
@@ -57,9 +57,9 @@ and publishes `dist/` to Pages.
 
 One-time setup on the GitHub repo: **Settings → Pages → Source → GitHub
 Actions**. After that, every push to `main` deploys automatically (about 1-2
-minutes). Live at: `https://barmoshe.github.io/itay-shekter-portfolio/`.
+minutes). Live at: `https://barmoshe.github.io/itay-shechter-portfolio/`.
 
-The Vite `base` is `/itay-shekter-portfolio/` so asset URLs resolve under that
+The Vite `base` is `/itay-shechter-portfolio/` so asset URLs resolve under that
 subpath. `public/.nojekyll` keeps Pages from stripping build asset folders.
 
 ## Project rules
