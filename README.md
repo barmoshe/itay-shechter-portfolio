@@ -57,10 +57,11 @@ and publishes `dist/` to Pages.
 
 One-time setup on the GitHub repo: **Settings → Pages → Source → GitHub
 Actions**. After that, every push to `main` deploys automatically (about 1-2
-minutes). Live at: `https://barmoshe.github.io/itay-shechter-portfolio/`.
+minutes). Live at: `https://itayshechter.com/` (custom domain; see
+[HANDOFF.md](HANDOFF.md) for the swap procedure).
 
-The Vite `base` is `/itay-shechter-portfolio/` so asset URLs resolve under that
-subpath. `public/.nojekyll` keeps Pages from stripping build asset folders.
+The Vite `base` is `/` because the site is served from the apex of a custom
+domain. `public/.nojekyll` keeps Pages from stripping build asset folders.
 
 ## Project rules
 

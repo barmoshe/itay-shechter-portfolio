@@ -53,4 +53,4 @@ npm run lint && npm run build
 
 Push to `main` → `.github/workflows/deploy.yml` lints, builds, publishes to
 Pages. One-time: repo Settings → Pages → Source → GitHub Actions. Live at
-`https://barmoshe.github.io/itay-shechter-portfolio/`.
+`https://itayshechter.com/` (custom domain; see HANDOFF.md for the swap).
