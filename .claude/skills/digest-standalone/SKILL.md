@@ -89,6 +89,11 @@ Itay edits standalone.html  ─▶  you receive the file  ─▶  /digest-standa
   describing the sync method and a "contact Bar Moshe before structural changes"
   rule. If Itay's HTML arrives with that note removed or a structural change made
   without warning, surface it to the user before digesting.
+- SEO and social-share meta live in `index.html` (and the standalone `<head>`),
+  not in `content.ts`, so the digest does not touch them. The share image is
+  `public/img/og.jpg`, built from the hero photo. If a digest changes the hero
+  photo, regenerate it: `node scripts/render-og.mjs` (needs the host's
+  Playwright) or, dependency-free, pad the new hero to 1200x630 with `sips`.
 
 ## Best practices
 
