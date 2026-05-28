@@ -1,0 +1,11 @@
+# Itay Shechter
+
+> Hebrew-language personal portfolio for Itay Shechter (איתי שכטר), Social Media Lead. Built communities of 100K+ across V1, Fresh Agency, HOT, and Knesset Channel 11.
+
+## About
+
+- [Home](https://itayshechter.com/): single-page portfolio with bio, work history, skills, contact
+
+## Profiles
+
+- [Instagram](https://www.instagram.com/itay_shechter_/)
