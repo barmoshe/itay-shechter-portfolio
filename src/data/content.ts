@@ -112,6 +112,15 @@ export interface ExperienceSection extends SectionHead {
 const EMAIL = 'ltay1578@gmail.com';
 const PHONE_HREF = 'tel:0504082579';
 const PHONE_LABEL = '050-408-2579';
+// wa.me requires the international form with no leading 0 (IL +972).
+const WHATSAPP_HREF = 'https://wa.me/972504082579';
+
+export interface ContactOption {
+  kind: 'email' | 'whatsapp';
+  label: string;
+  value: string;
+  href: string;
+}
 
 export const content = {
   nav: {
@@ -433,6 +442,16 @@ export const content = {
       { text: PHONE_LABEL, arrow: 'טלפון →', href: PHONE_HREF },
       { text: '@itay_shechter_', arrow: 'אינסטגרם →', href: 'https://www.instagram.com/itay_shechter_/' },
     ] as ContactLink[],
+  },
+
+  contactModal: {
+    title: 'דברו איתי',
+    sub: 'בחרו את הערוץ הנוח לכם. עונה באותו יום.',
+    closeLabel: 'סגור',
+    options: [
+      { kind: 'email', label: 'אימייל', value: EMAIL, href: `mailto:${EMAIL}` },
+      { kind: 'whatsapp', label: 'וואטסאפ', value: PHONE_LABEL, href: WHATSAPP_HREF },
+    ] as ContactOption[],
   },
 
   footer: '© 2026 · Itay Shechter · Social Media Lead',

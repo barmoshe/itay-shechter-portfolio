@@ -1,7 +1,11 @@
 import { content } from '../data/content';
 import { CheckIcon } from './icons';
 
-export function Nav() {
+interface Props {
+  onOpenContact: () => void;
+}
+
+export function Nav({ onOpenContact }: Props) {
   const { brand, cta } = content.nav;
   return (
     <nav>
@@ -11,7 +15,9 @@ export function Nav() {
           <CheckIcon />
         </div>
       </div>
-      <a href={cta.href} className="nav-cta">{cta.label}</a>
+      <button type="button" className="nav-cta" onClick={onOpenContact}>
+        {cta.label}
+      </button>
     </nav>
   );
 }

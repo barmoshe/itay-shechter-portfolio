@@ -24,9 +24,11 @@ nav{
 }
 .nav-check svg{width:10px; height:10px}
 .nav-cta{
+  font-family:inherit;
   font-size:0.82rem; font-weight:500; letter-spacing:0.02em;
   padding:0.55rem 1.1rem; border:1px solid var(--gold);
-  color:var(--gold); border-radius:999px; transition:background 0.2s, color 0.2s;
+  color:var(--gold); background:transparent; border-radius:999px;
+  cursor:pointer; transition:background 0.2s, color 0.2s;
   white-space:nowrap;
 }
 .nav-cta:hover{background:var(--gold); color:#0A0A0A}
@@ -389,6 +391,77 @@ footer{
   font-size:0.78rem; color:var(--ink-dim); font-weight:400;
 }
 
+/* ── CONTACT MODAL ── */
+.contact-modal{
+  border:1px solid var(--rule-2); background:var(--bg-2); color:var(--ink);
+  border-radius:18px; padding:0; max-width:380px; width:calc(100% - 2rem);
+  box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,168,106,0.06),
+             0 0 60px 0 var(--gold-glow);
+}
+.contact-modal[open]{animation:contact-modal-in 0.18s ease-out}
+.contact-modal::backdrop{
+  background:rgba(8,8,8,0.72);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.contact-modal-inner{
+  position:relative;
+  padding:1.6rem 1.6rem 1.8rem;
+  font-family:var(--font);
+}
+.contact-modal-close{
+  position:absolute; top:0.7rem; inset-inline-end:0.7rem;
+  width:34px; height:34px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:transparent; border:none; border-radius:999px;
+  color:var(--ink-mute); cursor:pointer;
+  transition:background 0.18s, color 0.18s;
+}
+.contact-modal-close:hover{color:var(--ink); background:rgba(244,241,233,0.06)}
+.contact-modal-close svg{width:18px; height:18px}
+.contact-modal-title{
+  font-size:1.5rem; font-weight:300; letter-spacing:-0.02em;
+  margin-bottom:0.4rem;
+}
+.contact-modal-sub{
+  font-size:0.92rem; color:var(--ink-mute); line-height:1.55;
+  margin-bottom:1.2rem;
+}
+.contact-modal-options{display:grid; gap:0.7rem}
+.contact-option{
+  display:flex; align-items:center; gap:0.95rem;
+  padding:0.95rem 1.1rem;
+  border:1px solid var(--rule-2); border-radius:14px;
+  color:var(--ink); background:transparent;
+  transition:border-color 0.18s, background 0.18s, color 0.18s, transform 0.15s;
+}
+.contact-option:hover{
+  border-color:var(--gold); color:var(--gold);
+  background:rgba(201,168,106,0.05);
+  transform:translateY(-1px);
+}
+.contact-option-icon{
+  width:40px; height:40px; flex-shrink:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  border-radius:999px; border:1px solid var(--rule-2);
+  color:var(--gold); transition:border-color 0.18s, background 0.18s;
+}
+.contact-option:hover .contact-option-icon{
+  border-color:var(--gold-soft); background:var(--gold-glow);
+}
+.contact-option-icon svg{width:20px; height:20px}
+.contact-option-text{display:flex; flex-direction:column; gap:0.15rem; min-width:0}
+.contact-option-label{font-size:0.98rem; font-weight:500}
+.contact-option-value{
+  font-size:0.82rem; color:var(--ink-mute); letter-spacing:0.01em;
+  direction:ltr; text-align:start;
+}
+.contact-option:hover .contact-option-value{color:var(--gold-2)}
+@keyframes contact-modal-in{
+  from{opacity:0; transform:translateY(8px) scale(0.98)}
+  to{opacity:1; transform:none}
+}
+
 /* ── REVEAL ── */
 .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.7s ease-out, transform 0.7s ease-out}
 .reveal.in{opacity:1; transform:none}
@@ -422,6 +495,8 @@ footer{
   .contact-link{padding:1rem 1.25rem; font-size:0.92rem}
   .exp-item{padding:1.15rem}
   .mini-card{padding:1rem}
+  .contact-modal-inner{padding:1.4rem 1.3rem 1.5rem}
+  .contact-modal-title{font-size:1.35rem}
 }
 
 /* ── REDUCED MOTION ── */
