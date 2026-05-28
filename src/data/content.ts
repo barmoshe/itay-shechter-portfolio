@@ -120,7 +120,6 @@ export const content = {
   },
 
   hero: {
-    eyebrow: 'זמין לפרויקטים חדשים',
     name: 'איתי שכטר',
     roleLead: 'Social Media ',
     roleGold: 'Lead',

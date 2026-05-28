@@ -8,7 +8,6 @@ export function Hero() {
     <section className="hero container">
       <div className="hero-grid">
         <div className="hero-text">
-          <div className="hero-eyebrow"><span className="dot" />{h.eyebrow}</div>
           <h1 className="hero-title">
             {h.name}<span className="dot">.</span>
             <span className="role">{h.roleLead}<span className="gold">{h.roleGold}</span></span>
