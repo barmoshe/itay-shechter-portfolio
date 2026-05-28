@@ -393,6 +393,10 @@ footer{
 
 /* ── CONTACT MODAL ── */
 .contact-modal{
+  /* Explicit centering — UA defaults for <dialog> can drift under custom
+     max-width / RTL; inset:0 + margin:auto + height:fit-content is robust. */
+  position:fixed; inset:0; margin:auto;
+  height:fit-content; max-height:calc(100vh - 2rem);
   border:1px solid var(--rule-2); background:var(--bg-2); color:var(--ink);
   border-radius:18px; padding:0; max-width:380px; width:calc(100% - 2rem);
   box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,168,106,0.06),
