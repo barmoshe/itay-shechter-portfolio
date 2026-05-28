@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Search/training bots — explicitly welcome
+# Search/training bots, explicitly welcome
 User-agent: GPTBot
 Allow: /
 
