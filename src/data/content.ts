@@ -432,7 +432,7 @@ export const content = {
     links: [
       { text: EMAIL, arrow: 'אימייל →', href: `mailto:${EMAIL}` },
       { text: PHONE_LABEL, arrow: 'טלפון →', href: PHONE_HREF },
-      { text: '@itay_shekter', arrow: 'אינסטגרם →', href: 'https://www.instagram.com/itay_shekter' },
+      { text: '@itay_shechter_', arrow: 'אינסטגרם →', href: 'https://www.instagram.com/itay_shechter_/' },
     ] as ContactLink[],
   },
 
