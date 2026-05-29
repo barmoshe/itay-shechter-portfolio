@@ -393,7 +393,7 @@ footer{
 
 /* ── CONTACT MODAL ── */
 .contact-modal{
-  /* Explicit centering — UA defaults for <dialog> can drift under custom
+  /* Explicit centering. UA defaults for <dialog> can drift under custom
      max-width / RTL; inset:0 + margin:auto + height:fit-content is robust. */
   position:fixed; inset:0; margin:auto;
   height:fit-content; max-height:calc(100vh - 2rem);

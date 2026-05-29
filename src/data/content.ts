@@ -139,7 +139,7 @@ export const content = {
         t: '. מהקמת שפה מותגית ועד הפקת וידאו שעובד. אני לוקח רעיון ומתרגם אותו לתוכן שאנשים באמת רוצים לראות.',
       },
     ] as Rich,
-    photo: { src: 'img/hero.jpg', alt: 'איתי שכטר' },
+    photo: { src: 'img/hero.jpg', alt: 'איתי שכטר', width: 640, height: 640 },
     ctas: {
       primary: { label: 'דברו איתי', href: `mailto:${EMAIL}` } as Link,
       ghost: { label: PHONE_LABEL, href: PHONE_HREF } as Link,

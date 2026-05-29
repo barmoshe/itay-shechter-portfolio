@@ -33,7 +33,12 @@ export function Hero({ onOpenContact }: Props) {
           </div>
         </div>
         <div className="hero-photo">
-          <img src={asset(h.photo.src)} alt={h.photo.alt} />
+          <img
+            src={asset(h.photo.src)}
+            alt={h.photo.alt}
+            width={h.photo.width}
+            height={h.photo.height}
+          />
         </div>
       </div>
     </section>
