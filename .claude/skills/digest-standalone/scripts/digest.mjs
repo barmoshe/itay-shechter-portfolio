@@ -71,7 +71,8 @@ const inventory = {
   'timeline items (.tl-item)': count(/class="tl-item[ "]/g) || count(/class="tl-item"/g),
   'sections (<section id>)': sectionIds.length,
   'hero stats (.stat)': count(/class="stat"/g),
-  'work cards (.work-card )': count(/class="work-card"/g),
+  // carousel slides carry `class="work-card vc-slide"`, so match work-card as a token
+  'work cards (.work-card )': count(/class="work-card[ "]/g),
   'skill cards (.skill-card)': count(/class="skill-card"/g),
   'mini cards (.mini-card)': count(/class="mini-card"/g),
   'platform links (.platform-link )': count(/class="platform-link"/g),
@@ -86,7 +87,7 @@ const inventory = {
 // with `~~` so it doesn't register here.
 const EXPECTED_MARKERS = [
   'nav', 'hero', 'timeline', 'v1', 'fresh', 'hot', 'kan',
-  'skills', 'education', 'contact', 'footer',
+  'skills', 'education', 'contact', 'contact-modal', 'footer',
 ];
 const foundMarkers = [...html.matchAll(/<!--\s*DIGEST:\s*([\w-]+)\s*-->/g)].map((x) => x[1]);
 const missingMarkers = EXPECTED_MARKERS.filter((k) => !foundMarkers.includes(k));
