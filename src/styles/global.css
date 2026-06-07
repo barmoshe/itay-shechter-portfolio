@@ -344,6 +344,130 @@ h2.section-headline .gold{font-weight:400}
 }
 .work-card:hover .work-card-link{opacity:1; gap:0.55rem}
 
+/* ── VIDEO CAROUSEL (קרוסלת קאברפלואו לסרטונים האנכיים) ── */
+.video-carousel{
+  --vc-w:300px;        /* רוחב הכרטיס המרכזי */
+  --vc-step:250px;     /* מרחק הכרטיסים שמהצדדים */
+  margin-top:1.9rem;
+  -webkit-user-select:none; user-select:none;
+}
+.vc-stage{
+  position:relative;
+  height:calc(var(--vc-w) * 16 / 9 + 2.5rem);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;          /* גוזר כרטיסי צד/רקע בקצה הקרוסלה, בלי דליפה לקצה העמוד */
+}
+.vc-viewport{
+  position:relative; width:100%; height:100%;
+  perspective:1500px;
+  touch-action:pan-y;
+  cursor:grab; outline:none;
+}
+.vc-viewport:active{cursor:grabbing}
+.vc-viewport:focus-visible{outline:2px solid var(--gold-soft); outline-offset:6px; border-radius:14px}
+
+.vc-slide{                       /* יש לו גם class="work-card" */
+  position:absolute; top:50%; left:50%;
+  width:var(--vc-w); margin:0;
+  transform-style:preserve-3d;
+  transition:transform .55s cubic-bezier(.22,1,.36,1), opacity .45s ease, filter .45s ease;
+  will-change:transform, opacity;
+  cursor:pointer;
+}
+.vc-slide .work-card-thumb{box-shadow:0 1px 0 var(--rule), 0 30px 60px -24px rgba(0,0,0,.75)}
+.vc-slide[data-pos="active"]{transform:translate(-50%,-50%) scale(1); opacity:1; z-index:4; filter:none}
+.vc-slide[data-pos="prev"]{   /* כרטיס קודם, ב-RTL מימין */
+  transform:translate(calc(-50% + var(--vc-step)), -50%) scale(.82) rotateY(-14deg);
+  opacity:.62; z-index:3; filter:brightness(.7);
+}
+.vc-slide[data-pos="next"]{   /* כרטיס הבא, ב-RTL משמאל */
+  transform:translate(calc(-50% - var(--vc-step)), -50%) scale(.82) rotateY(14deg);
+  opacity:.62; z-index:3; filter:brightness(.7);
+}
+.vc-slide[data-pos="far-prev"]{
+  transform:translate(calc(-50% + var(--vc-step) * 1.82), -50%) scale(.66) rotateY(-18deg);
+  opacity:.2; z-index:2; filter:brightness(.5);
+}
+.vc-slide[data-pos="far-next"]{
+  transform:translate(calc(-50% - var(--vc-step) * 1.82), -50%) scale(.66) rotateY(18deg);
+  opacity:.2; z-index:2; filter:brightness(.5);
+}
+.vc-slide[data-pos="hidden"]{transform:translate(-50%,-50%) scale(.5); opacity:0; z-index:1; pointer-events:none}
+/* רק הכרטיס הפעיל מגיב למעבר עכבר */
+.vc-slide:not([data-pos="active"]):hover .work-card-thumb{transform:none}
+.vc-slide[data-pos="active"]:hover .work-card-play{transform:translate(-50%,-50%) scale(1.08); background:rgba(201,168,106,0.85); color:#0B0B0B}
+
+.vc-arrow{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:6;
+  width:46px; height:46px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(19,19,19,.7); border:1px solid var(--rule-2); color:var(--ink);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  cursor:pointer; transition:background .2s, border-color .2s, opacity .2s, color .2s;
+}
+.vc-arrow svg{width:22px; height:22px}
+.vc-arrow:hover:not(:disabled){background:var(--gold); color:#0B0B0B; border-color:var(--gold)}
+.vc-arrow:disabled{opacity:.28; cursor:default}
+.vc-arrow--prev{inset-inline-start:0}   /* מימין ב-RTL */
+.vc-arrow--next{inset-inline-end:0}      /* משמאל ב-RTL */
+
+.vc-caption{position:relative; margin-top:1.4rem; min-height:138px; text-align:center}
+.vc-cap{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; gap:.3rem;
+  opacity:0; transform:translateY(8px);
+  transition:opacity .4s ease, transform .4s ease; pointer-events:none;
+}
+.vc-cap.is-active{opacity:1; transform:none; pointer-events:auto}
+.vc-cap .work-card-tag{font-size:.8rem}
+.vc-cap .work-card-title{font-size:1.15rem}
+.vc-cap .work-card-desc{
+  max-width:440px; margin-top:.15rem;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.vc-cap .work-card-link{margin-top:.55rem; background:none; border:none; cursor:pointer; font-family:inherit; font-size:.8rem}
+
+.vc-dots{display:flex; justify-content:center; gap:.55rem; margin-top:1.1rem}
+.vc-dot{
+  width:8px; height:8px; border-radius:50%; padding:0;
+  background:var(--rule-2); border:none; cursor:pointer;
+  transition:background .25s, width .25s;
+}
+.vc-dot.is-active{background:var(--gold); width:22px; border-radius:999px}
+
+/* ── VIDEO LIGHTBOX (נגן טיקטוק בתוך האתר) ── */
+.vc-lightbox{
+  border:none; padding:0; background:transparent;
+  max-width:100vw; max-height:100vh; margin:auto; overflow:visible;
+}
+.vc-lightbox::backdrop{background:rgba(0,0,0,.82); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.vc-lightbox-inner{display:flex; flex-direction:column; align-items:center; gap:.75rem}
+.vc-lightbox-close{
+  align-self:flex-end;
+  width:42px; height:42px; border-radius:50%;
+  background:rgba(19,19,19,.85); border:1px solid var(--rule-2); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition:background .2s, border-color .2s, color .2s;
+}
+.vc-lightbox-close:hover{background:var(--gold); color:#0B0B0B; border-color:var(--gold)}
+.vc-lightbox-close svg{width:20px; height:20px}
+.vc-lightbox-frame{
+  position:relative; width:min(92vw, 400px, 46vh); aspect-ratio:9/16; max-height:82vh;
+  border-radius:16px; overflow:hidden; background:#000;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.8), 0 0 0 1px var(--rule-2);
+}
+.vc-lightbox-frame iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.vc-lightbox-link{display:inline-flex; align-items:center; gap:.4rem; font-size:.82rem; color:var(--gold)}
+
+@media (max-width:768px){
+  .video-carousel{--vc-w:260px; --vc-step:150px}
+}
+@media (max-width:480px){
+  .video-carousel{--vc-w:230px; --vc-step:64px}
+  .vc-arrow{width:40px; height:40px}
+  .vc-arrow svg{width:19px; height:19px}
+}
+
 /* ── SKILLS ── */
 .skills-grid{
   display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));

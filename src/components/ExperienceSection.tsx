@@ -1,42 +1,8 @@
-import type { ExperienceSection as Section, WorkSample } from '../data/content';
-import { asset } from '../lib/asset';
+import type { ExperienceSection as Section } from '../data/content';
 import { useReveal } from '../hooks/useReveal';
 import { RichText } from './RichText';
-import {
-  ArrowIcon,
-  PlatformGlyph,
-  PlayIcon,
-  TiktokBrandGlyph,
-  WorkLinkArrow,
-} from './icons';
-
-function WorkCard({ sample }: { sample: WorkSample }) {
-  return (
-    <a href={sample.href} target="_blank" rel="noopener" className="work-card">
-      <div
-        className="work-card-thumb"
-        style={{ backgroundImage: `url('${asset(sample.image)}')` }}
-      >
-        <div className="work-card-brand">
-          <TiktokBrandGlyph />
-          <span>{sample.brandHandle}</span>
-        </div>
-        <div className="work-card-play" aria-hidden="true">
-          <PlayIcon />
-        </div>
-        {sample.stat && (
-          <div className="work-card-stat"><span className="gold-dot" />{sample.stat}</div>
-        )}
-      </div>
-      <div className="work-card-body">
-        <div className="work-card-tag">{sample.tag}</div>
-        <div className="work-card-title">{sample.title}</div>
-        <div className="work-card-desc">{sample.desc}</div>
-        <div className="work-card-link">צפה ב-TikTok <WorkLinkArrow /></div>
-      </div>
-    </a>
-  );
-}
+import { VideoCarousel } from './VideoCarousel';
+import { ArrowIcon, PlatformGlyph } from './icons';
 
 export function ExperienceSection({ section }: { section: Section }) {
   const ref = useReveal<HTMLElement>();
@@ -71,13 +37,7 @@ export function ExperienceSection({ section }: { section: Section }) {
               </ul>
             )}
 
-            {item.workSamples && (
-              <div className="work-samples">
-                {item.workSamples.map((s, i) => (
-                  <WorkCard sample={s} key={i} />
-                ))}
-              </div>
-            )}
+            {item.workSamples && <VideoCarousel samples={item.workSamples} />}
           </div>
           <div className="exp-date">
             {item.date.map((line, i) => (

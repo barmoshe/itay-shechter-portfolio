@@ -56,6 +56,7 @@ export interface PlatformLink {
 
 export interface WorkSample {
   href: string;
+  videoId: string;
   image: string;
   brandHandle: string;
   stat?: string;
@@ -133,10 +134,10 @@ export const content = {
     roleLead: 'Social Media ',
     roleGold: 'Lead',
     bio: [
-      { t: 'אני עובד בנקודת המפגש שבין ' },
+      { t: 'אני איש תוכן, וידאו וקריאייטיב, שעובד בנקודת המפגש שבין ' },
       { t: 'חדשות, יצירה וקהל', strong: true },
       {
-        t: '. מהקמת שפה מותגית ועד הפקת וידאו שעובד. אני לוקח רעיון ומתרגם אותו לתוכן שאנשים באמת רוצים לראות.',
+        t: '. מהקמת שפה מותגית ועד להפקת וידאו שעובד, אני לוקח רעיון ומתרגם אותו לתוכן שאנשים באמת רוצים לראות, לשתף ולהגיב אליו.',
       },
     ] as Rich,
     photo: { src: 'img/hero.jpg', alt: 'איתי שכטר', width: 640, height: 640 },
@@ -145,10 +146,10 @@ export const content = {
       ghost: { label: PHONE_LABEL, href: PHONE_HREF } as Link,
     },
     stats: [
-      { num: '100K+', label: 'קהילה אורגנית' },
-      { num: '4', label: 'פלטפורמות' },
-      { num: '4+', label: 'שנות ניסיון' },
-      { num: '∞', label: 'צמיחה', ariaLabel: 'ללא הגבלה' },
+      { num: '6', label: 'פלטפורמות' },
+      { num: 'מיליונים', label: 'צפיות' },
+      { num: 'מאות אלפים', label: 'ניהול קהילה' },
+      { num: 'קריאייטיב', label: 'רעב ובועט' },
     ] as Stat[],
   },
 
@@ -165,7 +166,9 @@ export const content = {
         detail: [
           { t: 'הקמת מערך הסושיאל מאפס. אסטרטגיה, שפה ותוכן בארבע פלטפורמות. ' },
           { t: 'צמיחה אורגנית ל־100K עוקבים בשנה הראשונה', hl: true },
-          { t: ', וחברות בצוות שפיתח את פורמט הווידאו "60 שניות".' },
+          { t: ', וחברות בצוות שפיתח את פורמט הווידאו "60 שניות" ובצוות שתפעל את סדרת המיקרו-דרמה ' },
+          { t: '"כשהגלים מתחזקים"', hl: true },
+          { t: '.' },
         ],
       },
       {
@@ -219,8 +222,8 @@ export const content = {
         {
           body: [
             { t: 'הקמת מערך הסושיאל של האפליקציה מאפס, ב־' },
-            { t: 'Instagram · TikTok · Facebook · Telegram', hl: true },
-            { t: ', החל משלב פתיחת החשבונות.' },
+            { t: 'Instagram · TikTok · Facebook · Telegram · YouTube', hl: true },
+            { t: ', החל משלב פתיחת החשבונות ועד בניית קהילה שמונה מאות אלפי עוקבים.' },
           ],
         },
         {
@@ -239,15 +242,24 @@ export const content = {
         },
         {
           body: [
+            { t: 'שותף בצוות שתפעל את סדרת המיקרו-דרמה ' },
+            { t: '"כשהגלים מתחזקים"', hl: true },
+            { t: ', שסחפה אחריה שיח ער ברשת.' },
+          ],
+        },
+        {
+          body: [
             { t: 'שותפות בצוות המייסדים: לקחתי חלק פעיל בצוות הליבה שהקים, ייסד והשיק את אפליקציית V1.' },
           ],
         },
       ],
     },
     miniCards: [
-      { role: 'Instagram', company: '100K+ עוקבים', body: 'אורגניים, ממשיך לגדול' },
-      { role: 'פלטפורמות', company: '4 ערוצים', body: 'הוקמו מאפס, מנוהלים שוטף' },
-      { role: 'קהילה', company: 'אורגנית', body: 'ללא מודעות ממומנות' },
+      {
+        role: 'Instagram',
+        company: 'מאות אלפי עוקבים',
+        body: 'נכנסו לזירה קשוחה מול עמודים ותיקים והגענו לשורה הראשונה. מיליוני צפיות, אורגני בלבד.',
+      },
     ],
     platformLinks: [
       {
@@ -306,6 +318,7 @@ export const content = {
       workSamples: [
         {
           href: 'https://vt.tiktok.com/ZSxfNmUk5/',
+          videoId: '7213342478848511233',
           image: 'img/work-1.jpg',
           brandHandle: '@buyme.co.il',
           tag: 'BUYME ישראל',
@@ -314,12 +327,23 @@ export const content = {
         },
         {
           href: 'https://vt.tiktok.com/ZSxfFM1g6/',
+          videoId: '7215933593686756609',
           image: 'img/work-2.jpg',
           brandHandle: '@kfcisrael',
           stat: '1M+ צפיות אורגני',
           tag: 'KFC ישראל',
           title: 'טרנד הרולאפס, מיליון צפיות אורגני',
           desc: 'רכבנו על הטרנד החם במדינה ויצרנו סרטון ויראלי מאפס. רעיון, צילום ועריכה שהביאו לחשיפה אורגנית אדירה ושיח מטורף סביב המותג.',
+        },
+        {
+          href: 'https://vt.tiktok.com/ZSxnEYDrs/',
+          videoId: '7273419268144827654',
+          image: 'img/work-3.jpg',
+          brandHandle: '@samsungisrael',
+          stat: '600K+ צפיות אורגני',
+          tag: 'Samsung ישראל',
+          title: 'Galaxy Z Flip5 פוגש מוזיקה',
+          desc: 'חיברנו בין המכשיר המתקפל לעולם המוזיקה וההופעות בקמפיין #GalaxyMusic. קונספט, הפקה ועריכה בשפת הטיקטוק, עם חשיפה אורגנית רחבה.',
         },
       ],
     },
