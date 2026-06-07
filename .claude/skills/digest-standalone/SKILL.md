@@ -94,6 +94,14 @@ Itay edits standalone.html  ─▶  you receive the file  ─▶  /digest-standa
   `public/img/og.jpg`, built from the hero photo. If a digest changes the hero
   photo, regenerate it: `node scripts/render-og.mjs` (needs the host's
   Playwright) or, dependency-free, pad the new hero to 1200x630 with `sips`.
+- **The fresh videos are a coverflow carousel**, not a plain grid. Each video is
+  a `.vc-slide` thumbnail paired (by document order) with a `.vc-cap` caption,
+  plus a numeric `data-video-id` → `content.ts` `videoId` that the in-page
+  TikTok lightbox uses. React side: `src/components/VideoCarousel.tsx`; the
+  standalone mirrors it with a vanilla `<script>` + a `.vc-lightbox` `<dialog>`.
+  Routine copy edits are still just `content.ts` (tag/title/desc); the carousel
+  structure is stable. To get a new video's `videoId`/poster, resolve its
+  TikTok link via oEmbed (see `references/mapping.md`).
 
 ## Best practices
 

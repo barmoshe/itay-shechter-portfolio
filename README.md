@@ -77,9 +77,22 @@ src/
   data/content.ts        all copy + links (the thing the digest updates)
   styles/tokens.css      :root design tokens + base reset (1:1 from standalone)
   styles/global.css      component styles (1:1 from standalone)
-  components/            Nav, Hero, TimelineAccordion, ExperienceSection, Skills, Contact, Footer, icons, RichText
+  components/            Nav, Hero, TimelineAccordion, ExperienceSection, VideoCarousel, Skills, Contact, ContactModal, Footer, ProgressBar, icons, RichText
   hooks/                 useScrollProgress, useReveal
   lib/asset.ts           base-path-aware asset URLs
 .claude/skills/digest-standalone/   the sync skill (SKILL.md, scripts/digest.mjs, references/mapping.md)
 .github/workflows/deploy.yml        CI/CD to GitHub Pages
 ```
+
+## The video carousel
+
+The "Fresh / TikTok" section renders its vertical videos as a **coverflow
+carousel** (`components/VideoCarousel.tsx`) with an in-page **TikTok lightbox**
+(the official `tiktok.com/player/v1/<id>` iframe, loaded only on click — nothing
+from TikTok loads until a visitor presses play). Swipe / drag, arrows, dots, and
+keyboard all navigate; it starts on the middle card so the coverflow is
+symmetric. Each sample in `content.ts` carries a numeric `videoId`. The
+standalone HTML mirrors all of this with a small vanilla `<script>` plus a
+`.vc-lightbox` `<dialog>`, so the two stay in sync. Resolve a new video's
+`videoId` from its TikTok share link via oEmbed
+(`https://www.tiktok.com/oembed?url=<link>`), which also yields its poster image.
