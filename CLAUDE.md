@@ -33,7 +33,14 @@ edits the HTML with Claude (he doesn't code). When he sends an update, the
 - Edit `src/data/content.ts`. It is typed; keep the shape, change the data.
 - Rich text: `{ t, hl }` → gold highlight, `{ t, strong }` → bold.
 - Images live in `public/img/` with order-based names (`hero.jpg`,
-  `work-1.jpg`, `work-2.jpg`) and are referenced via `lib/asset.ts`.
+  `work-1.jpg`, `work-2.jpg`, `work-3.jpg`) and are referenced via `lib/asset.ts`.
+- The "Fresh / TikTok" videos are a **coverflow carousel + in-page TikTok
+  lightbox** (`components/VideoCarousel.tsx`, mirrored in the standalone by a
+  vanilla `<script>` + a `.vc-lightbox` `<dialog>`). Each `workSamples` entry
+  needs a numeric `videoId` (the lightbox player id); resolve it from the TikTok
+  share link via oEmbed. Adding a video = one `content.ts` entry + a
+  `public/img/work-N.jpg`. Don't change the carousel structure without checking
+  with Bar (it's part of the standalone↔mirror contract).
 
 ## Syncing from the standalone
 
