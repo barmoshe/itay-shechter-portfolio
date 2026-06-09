@@ -49,19 +49,19 @@ void main(){
   vec3 gold = vec3(0.789, 0.659, 0.416);   // --gold #C9A86A
   vec3 champagne = vec3(0.886, 0.788, 0.549); // --gold-2 #E2C98C
   vec3 col = vec3(0.043, 0.043, 0.043);
-  col += gold * 0.075 * smoothstep(0.3, 0.9, flow);
-  col += champagne * 0.06 * pow(smoothstep(0.5, 1.0, flow * flow * 1.5), 2.0);
+  col += gold * 0.20 * smoothstep(0.3, 0.9, flow);
+  col += champagne * 0.16 * pow(smoothstep(0.5, 1.0, flow * flow * 1.5), 2.0);
   // רכסים דקים — קווי אור חמקמקים בתוך הזרימה
   float ridge = 1.0 - abs(flow * 2.0 - 1.0);
-  col += champagne * 0.035 * pow(ridge, 6.0) * smoothstep(0.2, 0.7, q.x);
+  col += champagne * 0.09 * pow(ridge, 6.0) * smoothstep(0.2, 0.7, q.x);
 
   // זרקור חם שעוקב אחרי הסמן
   vec2 m = u_mouse / u_res;
   m.x *= aspect;
   vec2 pa = uv * vec2(aspect, 1.0);
   float d = distance(pa, m);
-  col += gold * 0.16 * exp(-d * d * 7.0) * u_mon * (0.4 + 0.6 * haze);
-  col += gold * 0.05 * exp(-d * d * 1.4) * u_mon;
+  col += gold * 0.26 * exp(-d * d * 7.0) * u_mon * (0.4 + 0.6 * flow);
+  col += gold * 0.09 * exp(-d * d * 1.4) * u_mon;
 
   // ויניטה עדינה + דיתר נגד פסים בשחורים
   float vig = smoothstep(1.3, 0.35, distance(uv, vec2(0.5)));
