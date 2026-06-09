@@ -28,6 +28,28 @@ edits the HTML with Claude (he doesn't code). When he sends an update, the
 - Site is **RTL Hebrew** (`<html lang="he" dir="rtl">`). Prefer logical CSS
   properties (`margin-inline`, `inset-inline-start`).
 
+## The design layer (mirror-side, 2026-06-10)
+
+The mirror carries visual enhancements that the standalone does not have:
+
+- `src/components/ShaderBackground.tsx`: WebGL gold-haze background. One slow
+  domain-warped flow, right side only, cursor spotlight on desktop. Mobile:
+  the light follows scroll progress, taps fire a light pulse, idle ambience
+  is brighter. Efficiency guards: DPR cap 0.66, 1.2MP cap, low-power hint,
+  hidden-tab pause, reduced-motion and no-WebGL fall back to a static glow.
+- `src/components/KineticName.tsx`: per-letter variable-weight breathing
+  (Heebo 100..900 loaded in `index.html`). Used on the hero name and all
+  section headlines. IntersectionObserver-gated; screen readers get an
+  `sr-only` copy (never use `role="text"`, it fails the a11y lint that gates
+  deploy).
+- CSS additions in `global.css`/`tokens.css`: champagne gradient golds, hero
+  photo light ring, card hover lifts, gold selection and focus ring, mobile
+  stats cards, photo-first mobile hero.
+
+When digesting a new standalone from Itay, sync **content only**; do not
+remove this layer. Tuning constants live at the top of the shader and in the
+KineticName props (base/boost/idle).
+
 ## Working on content
 
 - Edit `src/data/content.ts`. It is typed; keep the shape, change the data.

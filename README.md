@@ -10,6 +10,15 @@ with Claude (no coding required). This repo is a **mirror** of that file: the
 same look and copy, rebuilt as a modern React app so it deploys cleanly and
 stays maintainable.
 
+> **Mirror-side design layer (2026-06-10):** the React mirror now carries a
+> visual layer that is NOT in Itay's standalone HTML: a living WebGL gold-haze
+> background (`src/components/ShaderBackground.tsx`), kinetic variable-weight
+> typography on the hero name and section headers (`src/components/KineticName.tsx`,
+> Heebo variable font in `index.html`), gradient golds and hover polish in the
+> CSS, and a mobile interaction model (scroll-driven light, tap pulses,
+> autonomous ambience). A future digest from the standalone must preserve this
+> layer; it lives in components/styles, not in `content.ts`.
+
 ```
 Itay edits standalone.html  ─▶  he sends an update  ─▶  npm run digest -- <path>
                                                             │
