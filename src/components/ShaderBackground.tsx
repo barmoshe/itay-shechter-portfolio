@@ -123,9 +123,14 @@ export function ShaderBackground() {
     const t0 = performance.now();
     const onMouse = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; };
     const onLeave = () => { if (!touch) { mx = -1e4; my = -1e4; } };
+    let pulse = 0;
     const onTouch = (e: TouchEvent) => {
       const p = e.touches[0];
       if (p) { mx = p.clientX; my = p.clientY; lastTouch = performance.now(); }
+    };
+    const onTap = (e: TouchEvent) => {
+      onTouch(e);
+      pulse = 1; // הקשה = פעימת אור במקום המגע
     };
     const pointerActive = () =>
       touch ? performance.now() - lastTouch < 2500 && mx !== -1e4 : mx !== -1e4;
@@ -138,17 +143,24 @@ export function ShaderBackground() {
       const active = pointerActive();
       let tx: number, ty: number;
       if (active) { tx = mx; ty = my; }
-      else {
+      else if (touch) {
+        // אין אצבע: האור נוסע עם הגלילה — יורד בעמוד ומתנדנד עדין לרוחב
+        const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+        const sy = Math.min(1, Math.max(0, scrollY / max));
+        tx = innerWidth * (0.5 + 0.3 * Math.sin(sy * 9.42 + t * 0.12));
+        ty = innerHeight * (0.18 + 0.64 * sy + 0.06 * Math.sin(t * 0.2));
+      } else {
         tx = innerWidth * (0.5 + 0.36 * Math.sin(t * 0.19));
         ty = innerHeight * (0.4 + 0.27 * Math.sin(t * 0.131 + 1.7));
       }
-      monT += ((active ? 1 : 0.5) - monT) * 0.04;
-      smx += (tx - smx) * (active ? 0.07 : 0.016);
-      smy += (ty - smy) * (active ? 0.07 : 0.016);
+      pulse *= 0.965; // דעיכת פעימת ההקשה (~1.2 שניות)
+      monT += ((active ? 1 : touch ? 0.62 : 0.5) - monT) * 0.04;
+      smx += (tx - smx) * (active ? 0.07 : 0.022);
+      smy += (ty - smy) * (active ? 0.07 : 0.022);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uT, t);
       gl.uniform2f(uMouse, smx * scale, canvas.height - smy * scale);
-      gl.uniform1f(uMon, monT);
+      gl.uniform1f(uMon, Math.min(1.6, monT + pulse * 0.9));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       raf = requestAnimationFrame(frame);
     };
@@ -159,7 +171,7 @@ export function ShaderBackground() {
 
     addEventListener('mousemove', onMouse, { passive: true });
     addEventListener('mouseleave', onLeave);
-    addEventListener('touchstart', onTouch, { passive: true });
+    addEventListener('touchstart', onTap, { passive: true });
     addEventListener('touchmove', onTouch, { passive: true });
     addEventListener('resize', resize);
     document.addEventListener('visibilitychange', onVis);
@@ -170,7 +182,7 @@ export function ShaderBackground() {
       cancelAnimationFrame(raf);
       removeEventListener('mousemove', onMouse);
       removeEventListener('mouseleave', onLeave);
-      removeEventListener('touchstart', onTouch);
+      removeEventListener('touchstart', onTap);
       removeEventListener('touchmove', onTouch);
       removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', onVis);
