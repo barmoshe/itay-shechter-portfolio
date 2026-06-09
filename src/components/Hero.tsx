@@ -1,6 +1,7 @@
 import { content } from '../data/content';
 import { asset } from '../lib/asset';
 import { RichText } from './RichText';
+import { KineticName } from './KineticName';
 
 interface Props {
   onOpenContact: () => void;
@@ -13,7 +14,7 @@ export function Hero({ onOpenContact }: Props) {
       <div className="hero-grid">
         <div className="hero-text">
           <h1 className="hero-title">
-            {h.name}<span className="dot">.</span>
+            <KineticName text={h.name} /><span className="dot">.</span>
             <span className="role">{h.roleLead}<span className="gold">{h.roleGold}</span></span>
           </h1>
           <p className="hero-bio"><RichText value={h.bio} /></p>

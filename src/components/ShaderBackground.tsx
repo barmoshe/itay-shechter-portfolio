@@ -37,31 +37,28 @@ void main(){
   float aspect = u_res.x / u_res.y;
   vec2 p = uv * vec2(aspect, 1.0) * 2.0;
 
-  // זרימה מופשטת: עיוות-תחום כפול — נימי זהב מתאבכים, בלי חלקיקים
-  float t = u_t * 0.05;
-  vec2 drift = vec2(0.1 * sin(u_t * 0.05), -u_t * 0.028);
+  // זרימה מופשטת אחת, איטית ושקטה — כהה, אלגנטי, פשוט
+  float t = u_t * 0.032;
+  vec2 drift = vec2(0.08 * sin(u_t * 0.04), -u_t * 0.018);
   vec2 q = vec2(fbm(p + drift), fbm(p + vec2(3.1, 1.7) - drift * 0.8));
-  vec2 w = vec2(fbm(p + 2.3 * q + vec2(1.3, 9.1) + t * 0.7),
-                fbm(p + 2.3 * q + vec2(8.2, 2.4) - t * 0.5));
-  float flow = fbm(p + 2.5 * w);
+  float flow = fbm(p + 2.2 * q + t);
 
-  // בסיס כהה תואם לאתר (#0B0B0B); הזרימה מרימה אותו בשכבות זהב
+  // בסיס כהה תואם לאתר (#0B0B0B); הזרימה מרימה אותו בעדינות
   vec3 gold = vec3(0.789, 0.659, 0.416);   // --gold #C9A86A
   vec3 champagne = vec3(0.886, 0.788, 0.549); // --gold-2 #E2C98C
   vec3 col = vec3(0.043, 0.043, 0.043);
-  col += gold * 0.20 * smoothstep(0.3, 0.9, flow);
-  col += champagne * 0.16 * pow(smoothstep(0.5, 1.0, flow * flow * 1.5), 2.0);
-  // רכסים דקים — קווי אור חמקמקים בתוך הזרימה
-  float ridge = 1.0 - abs(flow * 2.0 - 1.0);
-  col += champagne * 0.09 * pow(ridge, 6.0) * smoothstep(0.2, 0.7, q.x);
+  // העשן חי רק בצד ימין — דועך לכלום עד אמצע המסך
+  float side = smoothstep(0.5, 0.97, uv.x);
+  col += gold * 0.075 * smoothstep(0.35, 0.95, flow) * side;
+  col += champagne * 0.045 * pow(smoothstep(0.6, 1.0, flow * flow * 1.4), 2.0) * side;
 
   // זרקור חם שעוקב אחרי הסמן
   vec2 m = u_mouse / u_res;
   m.x *= aspect;
   vec2 pa = uv * vec2(aspect, 1.0);
   float d = distance(pa, m);
-  col += gold * 0.26 * exp(-d * d * 7.0) * u_mon * (0.4 + 0.6 * flow);
-  col += gold * 0.09 * exp(-d * d * 1.4) * u_mon;
+  col += gold * 0.14 * exp(-d * d * 6.0) * u_mon * (0.4 + 0.6 * flow);
+  col += gold * 0.05 * exp(-d * d * 1.4) * u_mon;
 
   // ויניטה עדינה + דיתר נגד פסים בשחורים
   float vig = smoothstep(1.3, 0.35, distance(uv, vec2(0.5)));
