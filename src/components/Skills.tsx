@@ -1,5 +1,6 @@
 import { content } from '../data/content';
 import { useReveal } from '../hooks/useReveal';
+import { KineticName } from './KineticName';
 import { SkillGlyph } from './icons';
 
 export function Skills() {
@@ -8,7 +9,7 @@ export function Skills() {
   return (
     <section className="section container reveal" id={s.id} style={{ scrollMarginTop: 80 }} ref={ref}>
       <div className="section-label">{s.label}</div>
-      <h2 className="section-headline">{s.pre}<span className="gold">{s.gold}</span></h2>
+      <h2 className="section-headline"><KineticName text={s.pre} boost={150} idle={45} /><span className="gold"><KineticName text={s.gold} base={400} boost={150} idle={45} /></span></h2>
       {s.sub && <p className="section-sub">{s.sub}</p>}
       <div className="skills-grid">
         {s.cards.map((card, i) => (

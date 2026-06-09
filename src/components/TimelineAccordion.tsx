@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { content } from '../data/content';
+import { KineticName } from './KineticName';
 import { RichText } from './RichText';
 
 export function TimelineAccordion() {
@@ -10,7 +11,7 @@ export function TimelineAccordion() {
 
   return (
     <section className="timeline-section container" id={id}>
-      <h2 className="section-headline">{pre}<span className="gold">{gold}</span></h2>
+      <h2 className="section-headline"><KineticName text={pre} boost={150} idle={45} /><span className="gold"><KineticName text={gold} base={400} boost={150} idle={45} /></span></h2>
       <div className="timeline">
         {items.map((item, i) => {
           const isOpen = open === i;

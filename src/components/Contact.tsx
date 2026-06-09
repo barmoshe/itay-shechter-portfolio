@@ -1,4 +1,5 @@
 import { content } from '../data/content';
+import { KineticName } from './KineticName';
 import { useReveal } from '../hooks/useReveal';
 
 export function Contact() {
@@ -7,7 +8,7 @@ export function Contact() {
   return (
     <section className="section container reveal" id={c.id} style={{ scrollMarginTop: 80 }} ref={ref}>
       <div className="section-label">{c.label}</div>
-      <h2 className="contact-headline" lang="en">{c.pre}<span className="gold">{c.gold}</span></h2>
+      <h2 className="contact-headline" lang="en"><KineticName text={c.pre} boost={150} idle={45} /><span className="gold"><KineticName text={c.gold} base={400} boost={150} idle={45} /></span></h2>
       {c.sub && <p className="contact-sub">{c.sub}</p>}
       <div className="contact-list">
         {c.links.map((link, i) => {
