@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { content } from './data/content';
+import { ShaderBackground } from './components/ShaderBackground';
 import { ProgressBar } from './components/ProgressBar';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
@@ -17,6 +18,7 @@ export default function App() {
 
   return (
     <>
+      <ShaderBackground />
       <ProgressBar />
       <Nav onOpenContact={openContact} />
       <main>
