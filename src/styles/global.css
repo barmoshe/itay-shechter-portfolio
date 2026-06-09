@@ -6,6 +6,12 @@
 }
 #bg-shader.on{opacity:1}
 
+/* ── SR-ONLY (טקסט לקוראי מסך בלבד) ── */
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+
 /* ── PROGRESS ── */
 #prog{position:fixed; top:0; left:0; right:0; z-index:999; height:2px; background:transparent}
 #prog-bar{height:100%; width:0%; background:var(--gold); transition:width 0.05s linear}

@@ -77,7 +77,8 @@ export function KineticName({ text, base = 300, boost = 230, idle = 75 }: Props)
   }, [text, base, boost, idle]);
 
   return (
-    <span ref={ref} className="kinetic-name" role="text" aria-label={text}>
+    <span ref={ref} className="kinetic-name">
+      <span className="sr-only">{text}</span>
       {[...text].map((c, i) =>
         c === ' '
           ? <span key={i} aria-hidden="true" className="kn-sp">&nbsp;</span>
