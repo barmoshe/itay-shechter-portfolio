@@ -37,25 +37,23 @@ void main(){
   float aspect = u_res.x / u_res.y;
   vec2 p = uv * vec2(aspect, 1.0) * 2.0;
 
-  // אובך עולה: הרעש נסחף כלפי מעלה, מתנדנד קלות הצידה
-  float t = u_t * 0.045;
-  vec2 drift = vec2(0.12 * sin(u_t * 0.06), -u_t * 0.035);
-  float h1 = fbm(p * 1.15 + drift);
-  float h2 = fbm(p * 2.3 + drift * 1.6 + vec2(4.7, 1.3) + h1 * 0.55);
-  float haze = h1 * 0.65 + h2 * 0.35;
+  // זרימה מופשטת: עיוות-תחום כפול — נימי זהב מתאבכים, בלי חלקיקים
+  float t = u_t * 0.05;
+  vec2 drift = vec2(0.1 * sin(u_t * 0.05), -u_t * 0.028);
+  vec2 q = vec2(fbm(p + drift), fbm(p + vec2(3.1, 1.7) - drift * 0.8));
+  vec2 w = vec2(fbm(p + 2.3 * q + vec2(1.3, 9.1) + t * 0.7),
+                fbm(p + 2.3 * q + vec2(8.2, 2.4) - t * 0.5));
+  float flow = fbm(p + 2.5 * w);
 
-  // בסיס כהה תואם לאתר (#0B0B0B), האובך מרים אותו בזהב
+  // בסיס כהה תואם לאתר (#0B0B0B); הזרימה מרימה אותו בשכבות זהב
   vec3 gold = vec3(0.789, 0.659, 0.416);   // --gold #C9A86A
+  vec3 champagne = vec3(0.886, 0.788, 0.549); // --gold-2 #E2C98C
   vec3 col = vec3(0.043, 0.043, 0.043);
-  col += gold * 0.085 * smoothstep(0.35, 0.95, haze);
-  col += gold * 0.055 * pow(smoothstep(0.55, 1.0, haze), 3.0);
-
-  // גחליליות: ניצוצות זעירים ודלילים שנושמים
-  vec2 g = floor(p * 22.0 + vec2(0.0, -u_t * 0.5));
-  float seed = hash(g);
-  float tw = pow(max(0.0, sin(u_t * (0.6 + seed) + seed * 41.0)), 18.0);
-  float ember = step(0.985, seed) * tw;
-  col += vec3(0.95, 0.78, 0.45) * ember * 0.30 * smoothstep(0.3, 0.8, haze);
+  col += gold * 0.075 * smoothstep(0.3, 0.9, flow);
+  col += champagne * 0.06 * pow(smoothstep(0.5, 1.0, flow * flow * 1.5), 2.0);
+  // רכסים דקים — קווי אור חמקמקים בתוך הזרימה
+  float ridge = 1.0 - abs(flow * 2.0 - 1.0);
+  col += champagne * 0.035 * pow(ridge, 6.0) * smoothstep(0.2, 0.7, q.x);
 
   // זרקור חם שעוקב אחרי הסמן
   vec2 m = u_mouse / u_res;
