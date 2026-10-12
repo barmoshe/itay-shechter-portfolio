@@ -16,7 +16,7 @@
 }
 .hero-photo {
   position: relative;
-  width: clamp(140px, 22vw, 200px);
+  width: clamp(170px, 27vw, 250px);
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
@@ -127,7 +127,7 @@ h1.hero-title .role .gold {
   .hero-photo {
     order: -1;
     margin: 0 auto;
-    width: clamp(112px, 30vw, 150px);
+    width: clamp(140px, 38vw, 190px);
   }
   .hero-cta {
     justify-content: center;
