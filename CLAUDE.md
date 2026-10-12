@@ -18,7 +18,8 @@ load lazily). You never edit `dist/` and almost never edit `build.mjs`.
 - Each block in `<body>` starts with a marker comment `<!-- DIGEST: name -->`
   (nav, hero, v1, ai-tools, timeline, fresh, hot, kan, skills, education,
   contact, footer, contact-modal). Use them to find things; keep them.
-- Gold highlight: `<span class="hl">text</span>`. Bold: `<strong>text</strong>`.
+- Highlight (brighter text, in the timeline and bullet lists): `<span class="hl">text</span>`.
+  Bold: `<strong>text</strong>`.
 - Headlines: the part inside `<span class="gold">` is gold. Text inside
   `<span class="kinetic-name">` animates letter by letter on its own; edit it as
   plain text. Latin words inside Hebrew lines (V1, TikTok, AI) get `dir="ltr"`.
