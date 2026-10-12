@@ -16,8 +16,17 @@ export function progressBar(signal: AbortSignal) {
   draw();
 }
 
-/** Sections fade in the first time they come into view. */
+/** Sections fade in the first time they come into view. Until this runs, the
+ *  CSS fallback shows them after 3s (layout.css); fx-on switches it off. */
 export function reveal(signal: AbortSignal) {
+  const root = document.documentElement;
+  root.classList.add('fx-on');
+  signal.addEventListener('abort', () => root.classList.remove('fx-on'));
+  if (performance.now() > 2500) {
+    // the script came late and the fallback has (nearly) shown everything: keep it shown
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+    return;
+  }
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
@@ -130,4 +139,51 @@ export function phoneFeed(signal: AbortSignal) {
   const io = new IntersectionObserver((entries) => feed.classList.toggle('feed-off', !entries[0].isIntersecting));
   io.observe(feed);
   signal.addEventListener('abort', () => io.disconnect());
+}
+
+const TILT = 7; // degrees at the edge of the phone
+
+/** Pressing the phone tilts it a little toward the finger (the pressed side
+ *  sinks), holds the feed still, and springs back on release. */
+export function phoneTilt(signal: AbortSignal) {
+  if (prefersReducedMotion().matches) return;
+  const phone = document.querySelector<HTMLElement>('.phone');
+  const frame = phone?.querySelector<HTMLElement>('.phone-frame');
+  if (!phone || !frame) return;
+  let id: number | null = null;
+  let settle = 0;
+
+  const tilt = (e: PointerEvent) => {
+    const r = frame.getBoundingClientRect();
+    const x = Math.max(-0.5, Math.min(0.5, (e.clientX - r.left) / r.width - 0.5));
+    const y = Math.max(-0.5, Math.min(0.5, (e.clientY - r.top) / r.height - 0.5));
+    frame.style.transform = `rotateX(${(-y * 2 * TILT).toFixed(2)}deg) rotateY(${(x * 2 * TILT).toFixed(2)}deg) scale(0.985)`;
+  };
+  const release = (e: PointerEvent) => {
+    if (e.pointerId !== id) return;
+    id = null;
+    phone.dataset.press = 'release';
+    frame.style.removeProperty('transform'); // back to the CSS pose, with a soft overshoot
+    settle = window.setTimeout(() => delete phone.dataset.press, 700); // then the normal hover transition again
+  };
+  const opts = { signal };
+  phone.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (e.button !== 0 || id !== null) return;
+      id = e.pointerId;
+      clearTimeout(settle);
+      phone.dataset.press = 'hold';
+      tilt(e);
+    },
+    opts,
+  );
+  phone.addEventListener('pointermove', (e) => e.pointerId === id && tilt(e), { passive: true, signal });
+  phone.addEventListener('contextmenu', (e) => e.preventDefault(), opts); // a long press is part of the touch
+  for (const type of ['pointerup', 'pointercancel', 'pointerleave'] as const) phone.addEventListener(type, release, opts);
+  signal.addEventListener('abort', () => {
+    clearTimeout(settle);
+    delete phone.dataset.press;
+    frame.style.removeProperty('transform');
+  });
 }

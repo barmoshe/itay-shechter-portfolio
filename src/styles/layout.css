@@ -1,5 +1,15 @@
 /* Page chrome and the shared section skeleton. */
 
+/* No sideways scrolling on phones. body's overflow-x: hidden (base.css) is not
+   enough on iOS Safari, which can still pan to content past the edge (WebKit bug
+   222777), and 3D-transformed pieces (carousel, phone) may widen the page there.
+   clip on the content itself cuts that off; unlike hidden it is not a scroll
+   container, so the sticky phone keeps working. */
+main,
+footer {
+  overflow-x: clip;
+}
+
 /* WebGL smoke canvas behind the whole page (fades in when the shader starts) */
 #bg-shader {
   position: fixed;
@@ -82,12 +92,25 @@ h2.section-headline .gold {
 }
 
 /* sections fade up once as they enter the screen */
+/* Sections fade in as they scroll into view (reveal in src/effects/page.ts).
+   Safety net: if the script never runs, they show anyway after 3s; once it
+   starts it sets html.fx-on, which switches the fallback off. */
 .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition:
     opacity 0.7s ease-out,
     transform 0.7s ease-out;
+  animation: reveal-fallback 0.7s ease-out 3s forwards;
+}
+.fx-on .reveal {
+  animation: none;
+}
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 .reveal.in {
   opacity: 1;

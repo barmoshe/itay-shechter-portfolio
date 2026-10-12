@@ -33,17 +33,28 @@ export function smoke(signal: AbortSignal) {
     console.warn(gl.getShaderInfoLog(s));
     return null;
   };
+  let prog: WebGLProgram | null = null;
+  let buffer: WebGLBuffer | null = null;
+  const release = () => {
+    gl.deleteProgram(prog); // also frees its shaders, flagged below
+    gl.deleteBuffer(buffer);
+    prog = buffer = null;
+  };
   const setup = () => {
+    release();
     const vs = compile(gl.VERTEX_SHADER, VERT);
     const fs = compile(gl.FRAGMENT_SHADER, SMOKE_FRAG);
-    const prog = gl.createProgram();
+    prog = gl.createProgram();
     if (!vs || !fs || !prog) return false;
     gl.attachShader(prog, vs);
     gl.attachShader(prog, fs);
     gl.linkProgram(prog);
+    gl.deleteShader(vs); // freed with the program
+    gl.deleteShader(fs);
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
     gl.useProgram(prog);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW); // one triangle covers the screen
     const loc = gl.getAttribLocation(prog, 'p');
     gl.enableVertexAttribArray(loc);
@@ -169,7 +180,10 @@ export function smoke(signal: AbortSignal) {
     canvas.classList.remove('on');
   };
   reduced.addEventListener('change', () => reduced.matches && stop(), opts);
-  signal.addEventListener('abort', stop);
+  signal.addEventListener('abort', () => {
+    stop();
+    release();
+  });
 
   start();
   canvas.classList.add('on');
