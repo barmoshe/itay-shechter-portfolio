@@ -5,7 +5,7 @@ h2.section-headline.v1-title {
 }
 .v1-show {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 320px;
   gap: clamp(2rem, 6vw, 5rem);
   align-items: start;
   margin: 3rem 0 4rem;
@@ -63,8 +63,8 @@ h2.section-headline.v1-title {
 }
 .phone-frame {
   position: relative;
-  width: 290px;
-  height: 600px;
+  width: 304px;
+  height: 629px;
   border-radius: 48px;
   padding: 11px;
   background: linear-gradient(145deg, #353535 0%, #1b1b1b 48%, #0e0e0e 100%);
@@ -296,8 +296,8 @@ h2.section-headline.v1-title {
   }
   .phone-frame {
     transform: none;
-    width: 260px;
-    height: 540px;
+    width: 273px;
+    height: 567px;
   }
 }
 @media (max-width: 480px) {
@@ -305,8 +305,8 @@ h2.section-headline.v1-title {
     margin: 2rem 0 3rem;
   }
   .phone-frame {
-    width: 244px;
-    height: 504px;
+    width: 256px;
+    height: 529px;
     border-radius: 44px;
   }
   .phone-screen {
