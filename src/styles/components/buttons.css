@@ -20,7 +20,8 @@
 .btn-primary {
   border: 1px solid var(--gold);
   color: var(--gold);
-  background: transparent;
+  background: var(--gold-glow);
+  box-shadow: 0 0 0 1px var(--gold-glow);
 }
 .btn-primary:hover {
   background: var(--gold);
