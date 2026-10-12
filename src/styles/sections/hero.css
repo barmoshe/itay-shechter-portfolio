@@ -18,7 +18,7 @@
   position: relative;
   width: clamp(170px, 27vw, 250px);
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: 8%;
   overflow: hidden;
   box-shadow:
     0 0 0 1px rgba(245, 245, 242, 0.08),
@@ -41,13 +41,14 @@
   object-fit: cover;
 }
 .hero-photo::after {
-  /* slow champagne light ring around the photo */
+  /* slow champagne light ring around the photo (follows the square outline) */
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
+  padding: 2.5px;
   background: conic-gradient(
-    from 0deg,
+    from var(--photo-ring, 0deg),
     transparent 0deg,
     var(--gold-soft) 40deg,
     transparent 95deg,
@@ -55,14 +56,25 @@
     rgba(201, 168, 106, 0.18) 225deg,
     transparent 290deg
   );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1px));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
   animation: photo-ring 9s linear infinite;
   pointer-events: none;
 }
+@property --photo-ring {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 @keyframes photo-ring {
   to {
-    transform: rotate(360deg);
+    --photo-ring: 360deg;
   }
 }
 h1.hero-title {
