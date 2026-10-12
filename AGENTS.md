@@ -34,9 +34,10 @@ followers to 160K". This file tells you where everything is, so work it out your
 ### Every change goes: preview, then his yes, then live
 
 1. **Make the change on a new branch and open a pull request to `main`.** Never write to
-   `main` directly.
-2. **Show him the preview.** Vercel builds the pull request in about a minute and posts
-   the preview link on it (a comment, or "View deployment" in its checks). Send it like:
+   `main` directly. **Branch name: short, at most 22 characters, lowercase letters, digits
+   and dashes** (`bigger-photo`, `tiktok-160k`). Longer names break the preview link.
+2. **Show him the preview.** Vercel builds the branch in a minute or two, and a bot then
+   comments on the pull request: `Preview: https://...vercel.app`. Send him that link, like:
    "Here is your site with the change: <link>. Have a look, on your phone too. Should I
    update your live website?"
 3. **Wait for a clear yes** ("yes", "כן", "תעלה", "מעולה, תעדכן"). Only then merge the pull
@@ -50,8 +51,10 @@ followers to 160K". This file tells you where everything is, so work it out your
 - **No yes, no update.** Never merge without his answer to the preview, even for a tiny fix.
 - **The preview link isn't there yet:** never send him the pull request or a GitHub link
   instead. Say: "The preview is getting ready. Write me 'ready?' in a couple of minutes and
-  I'll send you the link." When he writes back, look on the pull request again. The link is
-  a `*.vercel.app` address, in Vercel's comment or the pull request's deployment.
+  I'll send you the link." When he writes back, read the pull request's comments again for
+  the one starting with `Preview:`. The link is the branch's address
+  (`https://itayshechter-site-git-<branch>-barmoshes-projects.vercel.app`), so after another
+  change on the same branch, wait a minute or two before sending it again.
 
 ## Where things live
 

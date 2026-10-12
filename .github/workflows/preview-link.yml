@@ -1,0 +1,99 @@
+# Posts the Vercel preview link on every pull request, so a chat assistant can
+# read it from the PR and send it to Itay. One comment per PR, starting with
+# "Preview:", written or updated by whichever path gets there first:
+#
+# 1. Vercel's own event (vercel.deployment.success, sent as a repository_dispatch;
+#    https://vercel.com/docs/git/vercel-for-github#repository-dispatch-events).
+#    Exact URL, no guessing. Only fires once this file is on main.
+# 2. Backup: on the pull request itself, wait until the branch's fixed Vercel
+#    address answers, then comment it. That address is only predictable while
+#    the label stays within 63 characters, hence short branch names (AGENTS.md).
+#
+# No secrets needed. After moving the Vercel project, update the env below.
+name: Preview link
+on:
+  repository_dispatch:
+    types: [vercel.deployment.success]
+  pull_request:
+    types: [opened, reopened, synchronize]
+permissions:
+  pull-requests: write
+env:
+  VERCEL_PROJECT: itayshechter-site
+  VERCEL_SCOPE: barmoshes-projects
+  MARKER: '<!-- preview-link -->'
+jobs:
+  from-vercel:
+    if: github.event_name == 'repository_dispatch' && github.event.client_payload.environment != 'production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Comment the preview link on the branch's open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          BRANCH: ${{ github.event.client_payload.git.ref }}
+          URL: ${{ github.event.client_payload.url }}
+          ALIASES: ${{ join(github.event.client_payload.alias, ' ') }}
+        run: |
+          link=""
+          for a in $ALIASES; do case "$a" in *-git-*) link="$a";; esac; done
+          [ -n "$link" ] || link="$URL"
+          case "$link" in http*) ;; *) link="https://$link";; esac
+          prs=$(gh api "repos/$REPO/pulls?state=open&head=$OWNER:$BRANCH" --jq '.[].number')
+          [ -n "$prs" ] || { echo "No open pull request for $BRANCH"; exit 0; }
+          for pr in $prs; do
+            body="Preview: $link $MARKER"
+            id=$(gh api "repos/$REPO/issues/$pr/comments" --paginate \
+              --jq "[.[] | select(.body | contains(\"$MARKER\"))][0].id // empty")
+            if [ -n "$id" ]; then
+              gh api -X PATCH "repos/$REPO/issues/comments/$id" -f body="$body" >/dev/null
+            else
+              gh api "repos/$REPO/issues/$pr/comments" -f body="$body" >/dev/null
+            fi
+            echo "PR #$pr: $body"
+          done
+
+  backup-poll:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: preview-poll-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    steps:
+      - name: Wait for the branch preview and comment its link
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          slug=$(printf '%s' "$BRANCH" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+          label="$VERCEL_PROJECT-git-$slug-$VERCEL_SCOPE"
+          if [ ${#label} -gt 63 ]; then
+            echo "Branch name too long for a fixed address; relying on Vercel's event."
+            exit 0
+          fi
+          url="https://$label.vercel.app"
+          # A missing deployment is a 404 (DEPLOYMENT_NOT_FOUND); a ready one
+          # answers 200, or redirects to the Vercel login while previews are protected.
+          for i in $(seq 1 50); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$url/" || true)
+            if [ "$code" != "404" ] && [ "$code" != "000" ]; then break; fi
+            sleep 30
+          done
+          if [ "$code" = "404" ] || [ "$code" = "000" ]; then
+            echo "No preview after 25 minutes (docs-only change, or Vercel is down)."
+            exit 0
+          fi
+          body="Preview: $url $MARKER"
+          id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq "[.[] | select(.body | contains(\"$MARKER\"))][0].id // empty")
+          if [ -n "$id" ]; then
+            echo "Already commented: $(gh api "repos/$REPO/issues/comments/$id" --jq .body)"
+          else
+            gh api "repos/$REPO/issues/$PR/comments" -f body="$body" >/dev/null
+            echo "$body"
+          fi
