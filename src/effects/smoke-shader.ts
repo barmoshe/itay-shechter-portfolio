@@ -18,10 +18,13 @@ uniform float u_mon;     /* pointer light strength, 0..1.6 */
 uniform float u_scroll;  /* page progress, 0..1 */
 uniform float u_flow;    /* smoothed scroll speed, 0..1 */
 
+/* "Hash without sine" (Dave Hoskins). The older fract(p * 123.34) hash broke
+   into flat triangular shards on some GPUs (Intel via ANGLE/Metal), turning the
+   smoke into broken glass; this one stays smooth everywhere. */
 float hash(vec2 p){
-  p = fract(p * vec2(123.34, 456.21));
-  p += dot(p, p + 45.32);
-  return fract(p.x * p.y);
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
 }
 float noise(vec2 p){
   vec2 i = floor(p), f = fract(p);
