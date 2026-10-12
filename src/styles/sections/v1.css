@@ -67,7 +67,7 @@ h2.section-headline.v1-title {
   height: 600px;
   border-radius: 48px;
   padding: 11px;
-  background: linear-gradient(145deg, #2a2a2a, #0e0e0e);
+  background: linear-gradient(145deg, #353535 0%, #1b1b1b 48%, #0e0e0e 100%);
   box-shadow:
     0 0 0 1.5px #3a3a3a inset,
     0 0 0 1px #000,
