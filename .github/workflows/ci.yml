@@ -1,0 +1,23 @@
+# Guardrail for every change, human or AI: types, house rules (no em-dash, no
+# emoji) and the real build. Vercel deploys separately and never replaces the
+# live site with a failed build.
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build

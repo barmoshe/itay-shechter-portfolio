@@ -1,0 +1,14 @@
+# Itay Shechter (איתי שכטר)
+
+> Social Media Lead. Works where news, creativity and audience meet: from an idea to content people actually want to watch, share and respond to. Founding team member and head of social at V1, an Israeli news app.
+
+- Built V1's social presence from zero: 300K+ followers across Instagram, TikTok, Facebook and YouTube, organic growth (100K+ on Instagram in under a year).
+- Previously: TikTok content manager at Fresh Agency (Samsung, KFC, Papa John's, BUYME, Cellcom), social media manager at HOT, researcher at Kan 11 digital (the "Od Yom" podcast).
+- Builds internal tools with AI (Claude): for example, an Instagram stories tracker on the Meta API and Google Sheets.
+- B.A. in Communications, the College of Management.
+
+## Links
+
+- [Portfolio (Hebrew)](https://itayshechter.com/)
+- [Instagram](https://www.instagram.com/itay_shechter_/)
+- Contact: itay1578@gmail.com

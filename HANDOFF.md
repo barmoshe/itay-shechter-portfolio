@@ -21,8 +21,8 @@ Either works:
 1. Itay signs up at vercel.com with his GitHub account (Hobby plan is free and
    enough for this site).
 2. "Add New..." then "Project", pick the repo, and Import. Leave the settings as
-   they are: `vercel.json` already sets the build (`node build.mjs`, output
-   `dist`, no framework).
+   they are: Vercel detects Next.js (`vercel.json` also sets `framework: nextjs`)
+   and runs `npm run build`.
 3. After the first deploy, open the `*.vercel.app` URL and check the site:
    the carousel, a video, the "דברו איתי" popup, and a phone-width view.
 
@@ -84,20 +84,23 @@ To switch to Pages:
          - uses: actions/checkout@v4
          - uses: actions/setup-node@v4
            with:
-             node-version: '20'
-         - run: node build.mjs
+             node-version-file: .nvmrc
+             cache: npm
+         - run: npm ci
+         - run: npm run build
          - uses: actions/configure-pages@v5
          - uses: actions/upload-pages-artifact@v3
            with:
-             path: dist
+             path: out
          - id: deployment
            uses: actions/deploy-pages@v4
    ```
 
 2. Repo Settings, then Pages: Source "GitHub Actions". Push to `main` and the
-   site appears at `https://<username>.github.io/<repo>/` (the page uses
-   root-relative `/assets/...` links, so check it on the custom domain, where
-   the site sits at the root).
+   site appears at `https://<username>.github.io/<repo>/`. The page uses
+   root-relative `/_next/...` links, so it only looks right on the custom domain,
+   where the site sits at the root (or set `basePath` in `next.config.ts` for the
+   github.io address).
 3. Custom domain: Settings, then Pages, then Custom domain: `itayshechter.com`,
    and tick "Enforce HTTPS" once it is offered. At GoDaddy, set:
    - four `A` records on `@`: `185.199.108.153`, `185.199.109.153`,
@@ -118,5 +121,14 @@ To switch to Pages:
 
 ## After the move
 
-Day to day: edit `index.html` with Claude (see `CLAUDE.md`), push to `main`,
-and the host (Vercel, or GitHub Pages if you switch) publishes in about a minute.
+Day to day: Itay edits through an AI (see `docs/editing-he.md`; assistants read
+`AGENTS.md`), changes land on `main`, and the host (Vercel, or GitHub Pages if you
+switch) publishes in about a minute.
+
+Optional, once the repo is in Itay's account: GitHub Settings, then Branches (or
+Rules), add a rule for `main` that requires the `CI / check` status to pass. The
+trade-off: every change then has to go through a pull request (the GitHub web
+editor offers "Create a new branch and start a pull request"), so the quick
+"edit and commit to main" route in `docs/editing-he.md` stops working. Without the
+rule a broken change can reach `main`, but Vercel still refuses to publish a
+failed build, so the live site stays up.
