@@ -88,6 +88,10 @@ jobs:
             echo "No preview after 25 minutes (docs-only change, or Vercel is down)."
             exit 0
           fi
+          # The branch address exists from the moment the build starts (it shows
+          # "Deployment is building"), so give the build time to finish. Vercel's
+          # own success event (the job above) is the exact signal when it arrives.
+          sleep 120
           body="Preview: $url $MARKER"
           id=$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
             --jq "[.[] | select(.body | contains(\"$MARKER\"))][0].id // empty")
