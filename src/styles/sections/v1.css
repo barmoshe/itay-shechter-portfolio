@@ -92,7 +92,6 @@ h2.section-headline.v1-title {
   background: #0c1014;
   display: flex;
   flex-direction: column;
-  container-type: inline-size; /* the feed's loop distance is measured in this width (cqi) */
 }
 .phone-status {
   display: flex;
@@ -110,29 +109,37 @@ h2.section-headline.v1-title {
   letter-spacing: 1px;
   opacity: 0.9;
 }
-/* The screenshot scrolls forever. Its image and --feed-ratio (height / width,
-   read from the file at build time) are set inline by the V1 component, so the
-   loop distance always matches the image: one image height at the screen width. */
+/* The screenshot scrolls forever. The V1 component sets --feed (the image) and
+   --feed-ratio (its height / width, read from the file at build time) inline.
+   ::before is two image heights tall (padding % is relative to the width) and
+   tiles the image; moving it up by half is exactly one image, so the loop is
+   seamless for any screenshot, and it is a transform (cheap to animate). */
 .phone-feed {
   flex: 1;
-  background-size: 100% auto;
-  background-repeat: repeat-y;
+  position: relative;
+  overflow: hidden;
+}
+.phone-feed::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: calc(200% * var(--feed-ratio));
+  background: var(--feed) 0 0 / 100% auto repeat-y;
   animation: v1scroll 100s linear infinite;
 }
-.phone:hover .phone-feed,
-.phone-feed.feed-off {
+.phone:hover .phone-feed::before,
+.phone-feed.feed-off::before {
   animation-play-state: paused;
 }
 @keyframes v1scroll {
-  from {
-    background-position: 0 0;
-  }
   to {
-    background-position: 0 calc(-100cqi * var(--feed-ratio));
+    transform: translateY(-50%);
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .phone-feed {
+  .phone-feed::before {
     animation: none;
   }
 }

@@ -31,7 +31,8 @@ export function trackPointer(signal: AbortSignal) {
     },
     opts,
   );
-  addEventListener(
+  // mouseleave doesn't bubble, so it is heard on the root element, not on window
+  document.documentElement.addEventListener(
     'mouseleave',
     () => {
       if (!touchDevice) pointer.x = pointer.y = -1e4;

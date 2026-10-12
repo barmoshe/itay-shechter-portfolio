@@ -54,7 +54,7 @@ step 2:
 | Cost | Free (Hobby) | Free for a **public** repo; a private repo needs GitHub Pro |
 | Deploy | Automatic on push to `main` | Automatic on push, through the workflow below |
 | Preview link per branch | Yes | No |
-| `vercel.json` headers (security headers, 1-year image cache) | Applied | Not available; GitHub uses its own short cache |
+| `vercel.json` security headers (images get long-lived hashed URLs either way) | Applied | Not available; GitHub uses its own short cache |
 | Custom domain + HTTPS | Yes | Yes |
 
 To switch to Pages:

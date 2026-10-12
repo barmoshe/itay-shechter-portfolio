@@ -155,8 +155,8 @@ export function smoke(signal: AbortSignal) {
   canvas.addEventListener(
     'webglcontextrestored',
     () => {
+      if (reduced.matches || signal.aborted || !setup()) return;
       lost = false;
-      if (!setup()) return;
       resize(true);
       canvas.classList.add('on');
       start();

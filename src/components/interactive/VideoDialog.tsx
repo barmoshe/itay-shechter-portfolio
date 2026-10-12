@@ -41,7 +41,10 @@ export function VideoProvider({ children }: { children: ReactNode }) {
             <Icon name="close" />
           </button>
           <div className="vc-lightbox-frame">
+            {/* A new iframe per video (and none left behind on close), so closing
+                never leaves a player entry in the page's back history. */}
             <iframe
+              key={sample?.videoId ?? 'idle'}
               title={sample?.title ?? ''}
               src={sample ? playerSrc(sample.videoId) : undefined}
               allow="autoplay; encrypted-media; fullscreen; picture-in-picture"

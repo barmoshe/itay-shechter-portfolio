@@ -18,6 +18,7 @@ export function VideoCarousel({ samples }: { samples: WorkSample[] }) {
   const [active, setActive] = useState(Math.floor(n / 2));
   const openVideo = useVideo();
   const dragX = useRef<number | null>(null);
+  const swiped = useRef(false); // the click that ends a swipe must not also open or move
 
   const go = (i: number) => setActive(Math.max(0, Math.min(n - 1, i)));
 
@@ -25,7 +26,8 @@ export function VideoCarousel({ samples }: { samples: WorkSample[] }) {
     if (dragX.current === null) return;
     const dx = e.clientX - dragX.current;
     dragX.current = null;
-    if (Math.abs(dx) > SWIPE_PX) go(active + (dx > 0 ? -1 : 1));
+    swiped.current = Math.abs(dx) > SWIPE_PX;
+    if (swiped.current) go(active + (dx > 0 ? -1 : 1));
   };
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowRight') {
@@ -45,7 +47,10 @@ export function VideoCarousel({ samples }: { samples: WorkSample[] }) {
         </button>
         <div
           className="vc-viewport"
-          onPointerDown={(e) => (dragX.current = e.clientX)}
+          onPointerDown={(e) => {
+            dragX.current = e.clientX;
+            swiped.current = false;
+          }}
           onPointerUp={onPointerUp}
           onPointerCancel={() => (dragX.current = null)}
           onKeyDown={onKeyDown}
@@ -59,9 +64,11 @@ export function VideoCarousel({ samples }: { samples: WorkSample[] }) {
               target="_blank"
               rel="noopener"
               aria-label={`${s.brandHandle} · ${s.tag}`}
+              draggable={false} // a native link drag would cancel the swipe
               onClick={(e) => {
                 e.preventDefault();
-                if (i === active) openVideo(s);
+                if (swiped.current) swiped.current = false;
+                else if (i === active) openVideo(s);
                 else go(i);
               }}
             >
@@ -90,7 +97,7 @@ export function VideoCarousel({ samples }: { samples: WorkSample[] }) {
 
       <div className="vc-caption">
         {samples.map((s, i) => (
-          <div key={s.videoId} className={i === active ? 'vc-cap is-active' : 'vc-cap'} aria-hidden={i !== active}>
+          <div key={s.videoId} className={i === active ? 'vc-cap is-active' : 'vc-cap'} aria-hidden={i !== active} inert={i !== active}>
             <div className="work-card-tag">{s.tag}</div>
             <div className="work-card-title">{s.title}</div>
             <div className="work-card-desc">{s.desc}</div>

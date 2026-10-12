@@ -6,9 +6,9 @@ import { Icon } from '@/components/ui/Icon';
 
 export function V1() {
   const { feed } = v1.phone;
-  // The feed scrolls one image height per loop; the CSS needs the image's
-  // height/width ratio for that, read here from the imported file.
-  const feedStyle = { backgroundImage: `url(${feed.src})`, '--feed-ratio': feed.height / feed.width } as CSSProperties;
+  // The feed scrolls one image height per loop; the CSS (v1.css) needs the image
+  // and its height/width ratio, read here from the imported file.
+  const feedStyle = { '--feed': `url(${feed.src})`, '--feed-ratio': feed.height / feed.width } as CSSProperties;
 
   return (
     <section className="section container reveal" id={v1.id}>
