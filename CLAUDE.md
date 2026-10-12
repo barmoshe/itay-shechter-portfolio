@@ -34,8 +34,8 @@ load lazily). You never edit `dist/` and almost never edit `build.mjs`.
 
 - **No em-dashes** anywhere. Use commas, periods or parentheses.
 - **No emoji.** Icons are inline SVG.
-- Keep the look: dark background, gold accents, Heebo font. The gold silk WebGL
-  background (`#bg-shader-frag`), the breathing headline letters, the card edge
+- Keep the look: dark background, gold accents, Heebo font. The gold smoke WebGL
+  background (`#bg-shader-frag`, smoke in a soft spotlight), the breathing headline letters, the card edge
   light, the video carousel and the TikTok lightbox are driven by the scripts at
   the end of `index.html`; they read the HTML, so content edits never need a
   script change. Keep the background calm: no particles or dots.
