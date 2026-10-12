@@ -981,6 +981,17 @@ p,li,.v1-step p,.tool-body p,.exp-body{text-wrap:pretty}
   .tool::before{inset:0} /* .tool clips overflow, so keep its ring inside */
   .exp-item:hover::before,.mini-card:hover::before,.asset:hover::before,.skill-card:hover::before,.tool:hover::before{opacity:1}
 }
+
+/* ===== Scroll motion: items rise gently into place, a few at a time ===== */
+/* Only when the script is running (html.sm-on) and motion is welcome, so
+   nothing can stay hidden. The script removes .sm once an item has landed,
+   which hands its normal hover transitions back. */
+@media (prefers-reduced-motion:no-preference){
+  .sm-on .sm{opacity:0;transform:translateY(16px);
+    transition:opacity .8s cubic-bezier(.2,.7,.2,1) var(--sm-d,0s),transform .8s cubic-bezier(.2,.7,.2,1) var(--sm-d,0s)}
+  .sm-on .sm.sm-in{opacity:1;transform:none}
+  .hero-photo,.hero-text{will-change:transform}
+}
 </style>
 </head>
 <body>
@@ -2077,6 +2088,54 @@ void main(){
     });
     render();
   });
+
+  /* ---------- Scroll motion ----------
+     Cards, timeline rows and headlines rise gently into place as they come into
+     view, staggered a little; the hero eases away as you scroll past it. */
+  if (!reduced) {
+    var SM = '.section-headline,.tl-item,.v1-step,.v1-close,.asset,.tool,.tools-more,.exp-item,.mini-card,' +
+      '.skill-card,.platform-link,.contact-link';
+    var smItems = Array.from(document.querySelectorAll(SM)).filter(function (el) {
+      return el.getBoundingClientRect().top > innerHeight; // only what starts below the fold
+    });
+    smItems.forEach(function (el) { el.classList.add('sm'); });
+    document.documentElement.classList.add('sm-on');
+    // On each scroll frame, land every pending item that has reached the screen
+    // (or was skipped past by a jump), staggering the ones that land together.
+    var smPending = smItems.slice(), smTick = false;
+    function smSweep() {
+      smTick = false;
+      var landed = 0, edge = innerHeight * 0.94;
+      smPending = smPending.filter(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top > edge) return true;
+        var d = r.bottom < 0 ? 0 : Math.min(landed++, 5) * 0.07; // skipped past: no wait
+        el.style.setProperty('--sm-d', d + 's');
+        el.classList.add('sm-in');
+        setTimeout(function () {
+          el.classList.remove('sm', 'sm-in');
+          el.style.removeProperty('--sm-d');
+        }, 1300 + d * 1000);
+        return false;
+      });
+    }
+    addEventListener('scroll', function () {
+      if (!smTick && smPending.length) { smTick = true; requestAnimationFrame(smSweep); }
+    }, { passive: true });
+
+    var heroPhoto = document.querySelector('.hero-photo'), heroText = document.querySelector('.hero-text');
+    var heroTick = false;
+    function heroMotion() {
+      heroTick = false;
+      var y = Math.min(scrollY, innerHeight);
+      var k = y / innerHeight;
+      if (heroPhoto) { heroPhoto.style.transform = 'translateY(' + (y * 0.10).toFixed(1) + 'px)'; heroPhoto.style.opacity = (1 - k * 0.5).toFixed(3); }
+      if (heroText) heroText.style.transform = 'translateY(' + (y * 0.04).toFixed(1) + 'px)';
+    }
+    addEventListener('scroll', function () {
+      if (!heroTick) { heroTick = true; requestAnimationFrame(heroMotion); }
+    }, { passive: true });
+  }
 
   /* ---------- Card edge light: feeds the cursor position to the CSS ---------- */
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
