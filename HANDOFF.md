@@ -81,15 +81,15 @@ To switch to Pages:
          name: github-pages
          url: ${{ steps.deployment.outputs.page_url }}
        steps:
-         - uses: actions/checkout@v4
-         - uses: actions/setup-node@v4
+         - uses: actions/checkout@v6
+         - uses: actions/setup-node@v6
            with:
              node-version-file: .nvmrc
              cache: npm
          - run: npm ci
          - run: npm run build
          - uses: actions/configure-pages@v5
-         - uses: actions/upload-pages-artifact@v3
+         - uses: actions/upload-pages-artifact@v4
            with:
              path: out
          - id: deployment

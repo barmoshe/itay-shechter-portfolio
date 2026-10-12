@@ -10,7 +10,8 @@
     "dev": "next dev",
     "build": "node scripts/check-copy.mjs && next build",
     "start": "npx --yes serve@14.2.4 out",
-    "check": "next typegen && tsc --noEmit && node scripts/check-copy.mjs --strict"
+    "check": "next typegen && tsc --noEmit && node scripts/check-copy.mjs --strict",
+    "verify": "node scripts/verify-out.mjs"
   },
   "dependencies": {
     "next": "16.3.6",

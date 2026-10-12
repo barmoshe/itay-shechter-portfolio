@@ -1,23 +1,41 @@
 # Guardrail for every change, human or AI: types, house rules (no em-dash, no
-# emoji) and the real build. Vercel deploys separately and never replaces the
-# live site with a failed build.
+# emoji), the real build, and a smoke test of the built page. Runs on every
+# branch push and pull request. Vercel builds and deploys on its own; it never
+# replaces the live site with a failed build.
 name: CI
 on:
-  pull_request:
   push:
-    branches: [main]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run check
-      - run: npm run build
+      - name: Types and house rules
+        run: npm run check
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      - name: Smoke test the built page
+        run: npm run verify
+      - name: Keep the built site for inspection
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: site
+          path: out/
+          retention-days: 7
+          if-no-files-found: ignore

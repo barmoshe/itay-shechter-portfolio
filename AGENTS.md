@@ -103,11 +103,13 @@ of the names in `src/components/ui/Icon.tsx` (`sparkles`, `send`, `video`, `spro
 npm ci          # once
 npm run check   # types + house rules (fails on an em-dash or emoji)
 npm run build   # the real build; output in out/
+npm run verify  # smoke test of the built page (all sections, head tags)
 npm run dev     # optional: http://localhost:3000
 ```
 
-CI (`.github/workflows/ci.yml`) runs `check` and `build` on every pull request and
-push. If you can't run commands (a plain chat assistant), be extra careful with
+CI (`.github/workflows/ci.yml`) runs `check`, `build` and `verify` on every push and
+pull request. Vercel skips the deploy when a commit only touches docs (`*.md`,
+`docs/`, `.github/`). If you can't run commands (a plain chat assistant), be extra careful with
 quotes, commas and brackets in `site.ts`, and change only what was asked.
 
 ## How changes go live
