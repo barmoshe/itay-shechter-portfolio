@@ -48,8 +48,10 @@ followers to 160K". This file tells you where everything is, so work it out your
 - **He says no or drops it:** close the pull request and tell him his live website did not
   change.
 - **No yes, no update.** Never merge without his answer to the preview, even for a tiny fix.
-- **You can't see the preview link:** give him the pull request link and say "open this
-  and tap 'View deployment' to see the preview".
+- **The preview link isn't there yet:** never send him the pull request or a GitHub link
+  instead. Say: "The preview is getting ready. Write me 'ready?' in a couple of minutes and
+  I'll send you the link." When he writes back, look on the pull request again. The link is
+  a `*.vercel.app` address, in Vercel's comment or the pull request's deployment.
 
 ## Where things live
 
