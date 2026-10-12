@@ -1,0 +1,230 @@
+/* Contact popup ("talk to me") */
+.contact-modal {
+  /* explicit centering: UA defaults for <dialog> can drift under a custom
+     max-width or RTL; inset:0 + margin:auto + height:fit-content is robust */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  max-height: calc(100vh - 2rem);
+  border: 1px solid var(--rule-2);
+  background: var(--bg-2);
+  color: var(--ink);
+  border-radius: 18px;
+  padding: 0;
+  max-width: 380px;
+  width: calc(100% - 2rem);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(201, 168, 106, 0.06),
+    0 0 60px 0 var(--gold-glow);
+}
+.contact-modal[open] {
+  animation: contact-modal-in 0.18s ease-out;
+}
+.contact-modal::backdrop {
+  background: rgba(8, 8, 8, 0.72);
+  backdrop-filter: blur(4px);
+}
+.contact-modal-inner {
+  position: relative;
+  padding: 1.6rem 1.6rem 1.8rem;
+  font-family: var(--font);
+}
+.contact-modal-close {
+  position: absolute;
+  top: 0.7rem;
+  inset-inline-end: 0.7rem;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+.contact-modal-close:hover {
+  color: var(--ink);
+  background: rgba(244, 241, 233, 0.06);
+}
+.contact-modal-close svg {
+  width: 18px;
+  height: 18px;
+}
+.contact-modal-title {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
+}
+.contact-modal-sub {
+  font-size: 0.92rem;
+  color: var(--ink-mute);
+  line-height: 1.55;
+  margin-bottom: 1.2rem;
+}
+.contact-modal-options {
+  display: grid;
+  gap: 0.7rem;
+}
+.contact-option {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid var(--rule-2);
+  border-radius: 14px;
+  color: var(--ink);
+  background: transparent;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    color 0.18s,
+    transform 0.15s;
+}
+.contact-option:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201, 168, 106, 0.05);
+  transform: translateY(-1px);
+}
+.contact-option-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--rule-2);
+  color: var(--gold);
+  transition:
+    border-color 0.18s,
+    background 0.18s;
+}
+.contact-option:hover .contact-option-icon {
+  border-color: var(--gold-soft);
+  background: var(--gold-glow);
+}
+.contact-option-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.contact-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.contact-option-label {
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+.contact-option-value {
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.01em;
+  direction: ltr;
+  text-align: start;
+}
+.contact-option:hover .contact-option-value {
+  color: var(--gold-2);
+}
+@keyframes contact-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 480px) {
+  .contact-modal-inner {
+    padding: 1.4rem 1.3rem 1.5rem;
+  }
+  .contact-modal-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* Video lightbox (TikTok player inside the site) */
+.vc-lightbox {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: auto;
+  overflow: visible;
+}
+.vc-lightbox::backdrop {
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(6px);
+}
+.vc-lightbox-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.vc-lightbox-close {
+  align-self: flex-end;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(19, 19, 19, 0.85);
+  border: 1px solid var(--rule-2);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+.vc-lightbox-close:hover {
+  background: var(--gold);
+  color: var(--bg);
+  border-color: var(--gold);
+}
+.vc-lightbox-close svg {
+  width: 20px;
+  height: 20px;
+}
+.vc-lightbox-frame {
+  position: relative;
+  width: min(92vw, 400px, 46vh);
+  aspect-ratio: 9/16;
+  max-height: 82vh;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.8),
+    0 0 0 1px var(--rule-2);
+}
+.vc-lightbox-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.vc-lightbox-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--gold);
+}

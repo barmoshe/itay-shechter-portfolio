@@ -1,0 +1,41 @@
+/* Design tokens: colours, font and spacing. Changing a value here updates the
+   whole site. In the `base` layer, so it can never override a component rule. */
+@layer base {
+  :root {
+    /* backgrounds (dark) */
+    --bg: #0b0b0b; /* page */
+    --bg-2: #131313; /* cards on hover */
+
+    /* text (light) */
+    --ink: #f4f1e9; /* main text */
+    --ink-mute: rgba(244, 241, 233, 0.62); /* secondary text */
+    --ink-dim: rgba(244, 241, 233, 0.38); /* dates, handles */
+    --rule: rgba(244, 241, 233, 0.1); /* thin dividers */
+    --rule-2: rgba(244, 241, 233, 0.18); /* stronger dividers */
+
+    /* accent (gold) */
+    --gold: #c9a86a;
+    --gold-2: #e2c98c; /* champagne */
+    --gold-soft: rgba(201, 168, 106, 0.35);
+    --gold-glow: rgba(201, 168, 106, 0.14);
+
+    /* font and layout. --font-heebo is set by next/font in app/layout.tsx */
+    --font: var(--font-heebo), 'Heebo', system-ui, -apple-system, sans-serif;
+    --container: 1100px; /* max content width */
+    --reading: 720px; /* max paragraph width */
+    --gutter: clamp(1.25rem, 5vw, 4rem); /* side padding */
+    --section-y: clamp(4rem, 10vw, 8rem); /* vertical space between sections */
+  }
+}
+
+/* Breakpoints used across the stylesheets (CSS variables can't be used in
+   media queries, so they are written out; keep this table in sync):
+     min 880px  hero switches to text + photo side by side
+     max 900px  follower cards: 4 -> 2 columns
+     max 820px  V1 phone above the story; AI tool card stacks
+     max 768px  tablet/phone layout (nav, hero, cards, carousel size)
+     max 520px  smaller play button on video cards
+     max 480px  phone layout (single-column skills, carousel size, dialog padding)
+     max 400px  compact follower cards
+     max 360px  one more line for video captions
+   Merging close values (768/820, 880/900) would move layouts at the widths in between. */

@@ -1,0 +1,155 @@
+/* Experience and education sections: the featured card, bullet lists and
+   the small cards underneath (the cursor edge light is in components/cards.css) */
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.exp-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 2rem;
+  padding: 1.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: transparent;
+}
+/* shared hover for experience, mini and skill cards. It must stay before
+   .exp-item.featured: same specificity, and the featured gold edge has to win. */
+.exp-item,
+.mini-card,
+.skill-card {
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.exp-item:hover,
+.mini-card:hover,
+.skill-card:hover {
+  background: var(--bg-2);
+  border-color: var(--rule-2);
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 36px -20px rgba(0, 0, 0, 0.7),
+    0 0 0 1px var(--gold-glow);
+}
+.exp-item.featured {
+  border-right: 2px solid var(--gold);
+}
+.exp-role {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-bottom: 0.3rem;
+}
+.exp-company {
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 0.85rem;
+  letter-spacing: 0.01em;
+}
+.exp-body {
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  line-height: 1.75;
+}
+.exp-date {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  text-align: start;
+  padding-top: 0.3rem;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.bullet-list li {
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  line-height: 1.75;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.bullet-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.bullet-list li strong {
+  color: var(--ink);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.bullet-list li .hl {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* small cards */
+.mini-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.mini-card {
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+.mini-role {
+  font-size: 0.78rem;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.01em;
+}
+.mini-company {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.mini-date {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.45rem;
+  font-weight: 500;
+}
+.mini-body {
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+  line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  .exp-item {
+    grid-template-columns: 1fr;
+    padding: 1.35rem;
+  }
+  .exp-date {
+    padding-top: 0;
+    order: -1;
+    font-size: 0.78rem;
+  }
+}
+@media (max-width: 480px) {
+  .exp-item {
+    padding: 1.15rem;
+  }
+  .mini-card {
+    padding: 1rem;
+  }
+}

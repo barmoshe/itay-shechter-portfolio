@@ -1,0 +1,133 @@
+/* Page chrome and the shared section skeleton. */
+
+/* WebGL smoke canvas behind the whole page (fades in when the shader starts) */
+#bg-shader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+#bg-shader.on {
+  opacity: 1;
+}
+
+/* scroll progress bar (scaled from the right, the start edge in RTL) */
+#prog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 2px;
+  background: transparent;
+}
+#prog-bar {
+  height: 100%;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.05s linear;
+}
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* sections */
+.section,
+.timeline-section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+  border-top: 1px solid var(--rule);
+}
+.section[id] {
+  scroll-margin-top: 80px; /* in-page links land below the fixed nav */
+}
+.section-label {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+.section-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+h2.section-headline {
+  font-size: clamp(2.1rem, 6vw, 4rem);
+  font-weight: 300;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  margin-bottom: 0.7rem;
+}
+h2.section-headline .gold {
+  font-weight: 400;
+}
+.section-sub {
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+/* sections fade up once as they enter the screen */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* section dividers fade at the ends, with a faint warm centre */
+.section,
+.timeline-section {
+  border-image: linear-gradient(90deg, transparent, var(--rule) 18%, rgba(201, 168, 106, 0.22) 50%, var(--rule) 82%, transparent) 1;
+}
+
+/* typography: no lonely last words on narrow screens */
+h1,
+h2,
+h3,
+.section-sub,
+.v1-close,
+.contact-sub {
+  text-wrap: balance;
+}
+p,
+li,
+.v1-step p,
+.tool-body p,
+.exp-body {
+  text-wrap: pretty;
+}
+
+footer {
+  padding: 2rem var(--gutter);
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  font-weight: 400;
+}

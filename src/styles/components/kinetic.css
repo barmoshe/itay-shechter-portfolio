@@ -1,0 +1,13 @@
+/* Kinetic headlines: each letter is its own span so its weight can breathe
+   (animated by src/effects/kinetic.ts). Gold parts rest at weight 400. */
+.kinetic-name .kn-ch {
+  display: inline-block;
+  font-variation-settings: 'wght' 300;
+}
+.kinetic-name .kn-sp {
+  display: inline-block;
+  width: 0.22em;
+}
+h2.section-headline .gold .kinetic-name .kn-ch {
+  font-variation-settings: 'wght' 400;
+}

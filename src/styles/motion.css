@@ -1,0 +1,18 @@
+/* Scroll motion: items below the fold rise gently into place, a few at a time
+   (scrollMotion in src/effects/page.ts). Only when the script runs (html.sm-on) and
+   motion is welcome, so nothing can stay hidden. data-sm is "" while waiting
+   and "in" while landing; the script removes it once the item has landed,
+   which hands its normal hover transitions back. */
+@media (prefers-reduced-motion: no-preference) {
+  .sm-on [data-sm] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--sm-d, 0s),
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--sm-d, 0s);
+  }
+  .sm-on [data-sm='in'] {
+    opacity: 1;
+    transform: none;
+  }
+}

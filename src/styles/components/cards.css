@@ -1,0 +1,56 @@
+/* Card interactions shared by experience, mini, follower, skill, tool and
+   contact cards. Imported after the section styles on purpose: these rules
+   must win over the sections' own :hover rules of equal specificity. */
+
+/* tap feedback on touch screens: the card's border warms for a moment */
+@media (pointer: coarse) {
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  :is(.exp-item, .mini-card, .asset, .skill-card, .tool, .contact-link):active {
+    border-color: var(--gold-soft);
+  }
+}
+
+/* a gold edge light follows the cursor (mouse only). The card list is repeated
+   by edgeLight in src/effects/page.ts. --mx/--my don't inherit, so moving the light
+   restyles only the card's edge, not its contents. */
+@property --mx {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 50%;
+}
+@property --my {
+  syntax: '<length-percentage>';
+  inherits: false;
+  initial-value: 50%;
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.exp-item, .mini-card, .asset, .skill-card, .tool) {
+    position: relative;
+  }
+  :is(.exp-item, .mini-card, .asset, .skill-card, .tool)::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(226, 201, 140, 0.55), transparent 65%);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .tool::before {
+    inset: 0; /* .tool clips overflow, so keep its ring inside */
+  }
+  :is(.exp-item, .mini-card, .asset, .skill-card, .tool):hover::before {
+    opacity: 1;
+  }
+}

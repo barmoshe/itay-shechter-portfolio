@@ -1,0 +1,62 @@
+/* Contact: big headline and the three contact rows */
+.contact-headline {
+  font-size: clamp(2.3rem, 9vw, 6rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.25rem;
+}
+.contact-headline .gold {
+  font-weight: 300;
+}
+.contact-sub {
+  font-size: 1.05rem;
+  color: var(--ink-mute);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 480px;
+}
+.contact-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.15rem 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: transparent;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+  min-height: 52px;
+}
+.contact-link:hover {
+  background: var(--bg-2);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.contact-link-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.contact-link-arrow {
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.contact-link:hover .contact-link-arrow {
+  color: var(--gold);
+}
+
+@media (max-width: 480px) {
+  .contact-link {
+    padding: 1rem 1.25rem;
+    font-size: 0.92rem;
+  }
+}

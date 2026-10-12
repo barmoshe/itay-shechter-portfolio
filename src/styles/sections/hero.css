@@ -1,0 +1,139 @@
+/* Hero: name, role, bio, calls to action and the photo with its light ring */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: clamp(7rem, 14vw, 9rem);
+  padding-bottom: var(--section-y);
+  display: flex;
+  align-items: center;
+}
+.hero-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.hero-photo {
+  position: relative;
+  width: clamp(140px, 22vw, 200px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(245, 245, 242, 0.08),
+    0 0 60px 0 var(--gold-soft),
+    0 0 140px 12px rgba(201, 169, 97, 0.1);
+  flex-shrink: 0;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-photo::after {
+  /* slow champagne light ring around the photo */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--gold-soft) 40deg,
+    transparent 95deg,
+    transparent 180deg,
+    rgba(201, 168, 106, 0.18) 225deg,
+    transparent 290deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 2.5px), #000 calc(100% - 1px));
+  animation: photo-ring 9s linear infinite;
+  pointer-events: none;
+}
+@keyframes photo-ring {
+  to {
+    transform: rotate(360deg);
+  }
+}
+h1.hero-title {
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.4rem;
+}
+h1.hero-title .dot {
+  color: var(--gold);
+  font-weight: 300;
+}
+h1.hero-title .role {
+  display: block;
+  font-weight: 300;
+  font-size: clamp(1.25rem, 3vw, 1.9rem);
+  letter-spacing: -0.015em;
+  margin-top: 0.9rem;
+  color: var(--ink-mute);
+}
+/* champagne gradient on the gold word of the role */
+h1.hero-title .role .gold {
+  font-weight: 400;
+  background: linear-gradient(100deg, var(--gold) 12%, var(--gold-2) 42%, #f1e3bd 55%, var(--gold) 88%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-bio {
+  font-size: clamp(0.98rem, 1.4vw, 1.08rem);
+  color: var(--ink-mute);
+  max-width: 560px;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+.hero-bio strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+.hero-cta {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+@media (min-width: 880px) {
+  .hero-grid {
+    grid-template-columns: 1fr auto;
+    gap: clamp(3rem, 6vw, 5rem);
+  }
+  .hero-photo {
+    order: 2;
+  }
+  .hero-text {
+    order: 1;
+  }
+}
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 5.5rem;
+    min-height: auto;
+    padding-bottom: clamp(3rem, 9vw, 5rem);
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .hero-photo {
+    order: -1;
+    margin: 0 auto;
+    width: clamp(112px, 30vw, 150px);
+  }
+  .hero-cta {
+    justify-content: center;
+    margin-inline: auto;
+  }
+  .hero-bio {
+    margin-inline: auto;
+  }
+}

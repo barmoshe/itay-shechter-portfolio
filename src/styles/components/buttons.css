@@ -1,0 +1,38 @@
+/* Pill buttons (hero call to action and phone link) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+  min-height: 44px;
+}
+.btn-primary {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: var(--bg);
+  box-shadow: 0 8px 28px -8px var(--gold-soft);
+}
+.btn-ghost {
+  border: 1px solid var(--rule-2);
+  color: var(--ink);
+  background: transparent;
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  background: rgba(245, 245, 242, 0.04);
+}
