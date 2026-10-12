@@ -81,6 +81,32 @@ h2.section-headline.v1-title {
     transform: none;
   }
 }
+/* hover aura: a faint gold halo that fades in around the frame. It lives on ::after
+   (an outer shadow only, so nothing is painted over the screen) and rides along with
+   the frame's tilt, so the frame's own transition and transform stay untouched */
+.phone-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    0 0 0 1px var(--gold-glow),
+    0 0 36px 2px var(--gold-glow),
+    0 0 110px 14px var(--gold-glow);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+@media (hover: hover) {
+  .phone:hover .phone-frame::after {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .phone-frame::after {
+    transition: none;
+  }
+}
 /* pressed (touch or mouse): the phone tilts toward the finger
    (phoneTilt in src/effects/page.ts sets the transform) and springs back */
 .phone[data-press] .phone-frame {
