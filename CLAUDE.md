@@ -34,10 +34,14 @@ load lazily). You never edit `dist/` and almost never edit `build.mjs`.
 
 - **No em-dashes** anywhere. Use commas, periods or parentheses.
 - **No emoji.** Icons are inline SVG.
-- Keep the look: dark background, gold accents, Heebo font. The gold WebGL
-  background, the breathing headline letters, the video carousel and the TikTok
-  lightbox are driven by the scripts at the end of `index.html`; they read the
-  HTML, so content edits never need a script change.
+- Keep the look: dark background, gold accents, Heebo font. The gold silk WebGL
+  background (`#bg-shader-frag`), the breathing headline letters, the card edge
+  light, the video carousel and the TikTok lightbox are driven by the scripts at
+  the end of `index.html`; they read the HTML, so content edits never need a
+  script change. Keep the background calm: no particles or dots.
+- Mobile first: check 320px and 390px widths. Mobile fixes live in the
+  "Mobile polish" block at the end of `<style>`; grid columns use
+  `minmax(0,1fr)` so nothing pushes the page wider than the screen.
 - RTL: prefer logical CSS (`margin-inline`, `inset-inline-start`).
 
 ## Before you push
@@ -50,5 +54,6 @@ load lazily). You never edit `dist/` and almost never edit `build.mjs`.
 ## Hosting
 
 Vercel, building from this repo's `main` branch (settings in `vercel.json`).
-Domain `itayshechter.com` is registered at GoDaddy. Moving the site or domain
-between accounts: see `HANDOFF.md`.
+GitHub Pages is a documented alternative (static site, one account fewer): see
+"Option: GitHub Pages" in `HANDOFF.md`. Domain `itayshechter.com` is registered
+at GoDaddy. Moving the site or domain between accounts: see `HANDOFF.md`.

@@ -42,6 +42,72 @@ Either works:
 4. Wait for the domains to turn green in Vercel (minutes, sometimes up to a few
    hours). Vercel issues the HTTPS certificate on its own.
 
+## Option: GitHub Pages instead of Vercel
+
+The site is fully static, so GitHub Pages can host it too, with one account
+fewer (GitHub only). Not set up yet; Vercel is what runs today. Weigh it before
+step 2:
+
+| | Vercel (today) | GitHub Pages |
+|---|---|---|
+| Accounts | GitHub + Vercel | GitHub only |
+| Cost | Free (Hobby) | Free for a **public** repo; a private repo needs GitHub Pro |
+| Deploy | Automatic on push to `main` | Automatic on push, through the workflow below |
+| Preview link per branch | Yes | No |
+| `vercel.json` headers (security headers, 1-year image cache) | Applied | Not available; GitHub uses its own short cache |
+| Custom domain + HTTPS | Yes | Yes |
+
+To switch to Pages:
+
+1. Add `.github/workflows/pages.yml` with:
+
+   ```yaml
+   name: Deploy to GitHub Pages
+   on:
+     push:
+       branches: [main]
+     workflow_dispatch:
+   permissions:
+     contents: read
+     pages: write
+     id-token: write
+   concurrency:
+     group: pages
+     cancel-in-progress: false
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       environment:
+         name: github-pages
+         url: ${{ steps.deployment.outputs.page_url }}
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-node@v4
+           with:
+             node-version: '20'
+         - run: node build.mjs
+         - uses: actions/configure-pages@v5
+         - uses: actions/upload-pages-artifact@v3
+           with:
+             path: dist
+         - id: deployment
+           uses: actions/deploy-pages@v4
+   ```
+
+2. Repo Settings, then Pages: Source "GitHub Actions". Push to `main` and the
+   site appears at `https://<username>.github.io/<repo>/` (the page uses
+   root-relative `/assets/...` links, so check it on the custom domain, where
+   the site sits at the root).
+3. Custom domain: Settings, then Pages, then Custom domain: `itayshechter.com`,
+   and tick "Enforce HTTPS" once it is offered. At GoDaddy, set:
+   - four `A` records on `@`: `185.199.108.153`, `185.199.109.153`,
+     `185.199.110.153`, `185.199.111.153`
+   - a `CNAME` on `www` pointing to `<username>.github.io`
+   Remove other `@` / `www` records (Parked, forwarding, Vercel's). Leave MX
+   alone. GitHub recommends verifying the domain in the account's Pages
+   settings first, so no one else can claim it.
+4. If Vercel was set up before, remove the domain from the Vercel project.
+
 ## 4. Clean up the old copies
 
 - If the site was deployed on another Vercel account first, remove the domain
@@ -53,4 +119,4 @@ Either works:
 ## After the move
 
 Day to day: edit `index.html` with Claude (see `CLAUDE.md`), push to `main`,
-Vercel publishes in about a minute.
+and the host (Vercel, or GitHub Pages if you switch) publishes in about a minute.
