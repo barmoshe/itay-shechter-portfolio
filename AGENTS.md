@@ -50,10 +50,12 @@ Some fields are lists of pieces instead of one string:
 commas around it. Strings with a `'` inside (like `ג'ונס`) use double quotes.
 
 **Change a follower count.** In `v1.assets.items`, edit `value` (for example
-`'157K'`). The headline total is `v1.assets.total` (`'300K+'`).
+`'157K'`). The total above the cards, `v1.assets.total` (`'300K+'`), is typed by
+hand, not computed: if the new numbers change it, ask Itay whether to update it too.
 
 **Timeline: add or remove a row.** Edit `timeline.items`, newest first. One row
-looks like `{ year, role, company, detail }`. Exactly one row may have `open: true`
+looks like `{ year: '2026', role: '...', company: '...', detail: ['text.'] }`
+(`detail` is rich text, so a list, even for one plain sentence). Exactly one row may have `open: true`
 (it starts expanded).
 
 **Add a TikTok video** to the carousel in `fresh.videos`:
