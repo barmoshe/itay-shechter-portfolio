@@ -1,85 +1,54 @@
-# CLAUDE.md — itay-shechter-portfolio
+# CLAUDE.md: itayshechter.com
 
-React mirror of Itay Shechter's portfolio. Vite + React 19 + TypeScript, deployed
-to GitHub Pages. See `README.md` for the full picture.
-
-> **For the next agent:** this repo follows a deliberate method, the
-> `digest-standalone` sync, the 1:1 CSS port, the typed `content.ts`, and the
-> no em-dash / no emoji rules. Routine content edits and digests are fine on your
-> own. But do not change the sync mechanism, the design system, the build/deploy
-> setup, or the marker contract without checking with the maintainer **Bar Moshe**
-> first. Itay should contact Bar Moshe before any structural change so the
-> standalone and this mirror stay in sync.
+Itay Shechter's portfolio. One page, Hebrew, right-to-left. Itay doesn't code;
+he edits the site with Claude. Read this before changing anything.
 
 ## The one thing to understand
 
-Itay's **standalone HTML** is the source of truth; this repo is a mirror. Itay
-edits the HTML with Claude (he doesn't code). When he sends an update, the
-`digest-standalone` skill re-syncs this repo. Almost all content lives in
-`src/data/content.ts` — components render from it and rarely change.
+`index.html` **is the site**: copy, styles, behaviour and images (embedded as
+base64) all live in that one file. Open it in a browser to preview. There is no
+framework, no `npm install`, nothing to run.
+
+On every push to `main`, Vercel runs `node build.mjs`, which writes a faster copy
+to `dist/` (embedded images become separate cached files, below-the-fold images
+load lazily). You never edit `dist/` and almost never edit `build.mjs`.
+
+## Editing the content
+
+- Each block in `<body>` starts with a marker comment `<!-- DIGEST: name -->`
+  (nav, hero, v1, ai-tools, timeline, fresh, hot, kan, skills, education,
+  contact, footer, contact-modal). Use them to find things; keep them.
+- Gold highlight: `<span class="hl">text</span>`. Bold: `<strong>text</strong>`.
+- Headlines: the part inside `<span class="gold">` is gold. Text inside
+  `<span class="kinetic-name">` animates letter by letter on its own; edit it as
+  plain text. Latin words inside Hebrew lines (V1, TikTok, AI) get `dir="ltr"`.
+- Videos (block `fresh`): one `<a class="work-card vc-slide">` per video, with a
+  matching `<div class="vc-cap">` caption and one `<button class="vc-dot">`, all
+  in the same order. `data-video-id` is the numeric TikTok id (get it from the
+  share link via `https://www.tiktok.com/oembed?url=<link>`).
+- New images: embed as base64 (`data:image/...`). Size them for how big they
+  show on screen, at 2x: video thumbnails about 600px wide, the hero 640px.
+  Large photos make the page slow on phones.
 
 ## Hard rules
 
-- **No em-dashes (`—`)** anywhere. Use commas, periods, or parentheses.
-- **No emoji** in UI or code. Use inline SVG icons (`src/components/icons.tsx`).
-- **CSS is ported 1:1** from the standalone. `src/styles/tokens.css` is the
-  `:root` token block; `src/styles/global.css` is component styles. Keep them
-  faithful to the standalone — do not refactor into a different system.
-- Site is **RTL Hebrew** (`<html lang="he" dir="rtl">`). Prefer logical CSS
-  properties (`margin-inline`, `inset-inline-start`).
+- **No em-dashes** anywhere. Use commas, periods or parentheses.
+- **No emoji.** Icons are inline SVG.
+- Keep the look: dark background, gold accents, Heebo font. The gold WebGL
+  background, the breathing headline letters, the video carousel and the TikTok
+  lightbox are driven by the scripts at the end of `index.html`; they read the
+  HTML, so content edits never need a script change.
+- RTL: prefer logical CSS (`margin-inline`, `inset-inline-start`).
 
-## The design layer (mirror-side, 2026-06-10)
+## Before you push
 
-The mirror carries visual enhancements that the standalone does not have:
+1. Open `index.html` in a browser, desktop and phone width; click the
+   carousel, a video, the "דברו איתי" button and the timeline.
+2. Run `node build.mjs`. It warns if it finds an em-dash or emoji. To see
+   exactly what Vercel will publish, serve `dist/` (for example `npx serve dist`).
 
-- `src/components/ShaderBackground.tsx`: WebGL gold-haze background. One slow
-  domain-warped flow, right side only, cursor spotlight on desktop. Mobile:
-  the light follows scroll progress, taps fire a light pulse, idle ambience
-  is brighter. Efficiency guards: DPR cap 0.66, 1.2MP cap, low-power hint,
-  hidden-tab pause, reduced-motion and no-WebGL fall back to a static glow.
-- `src/components/KineticName.tsx`: per-letter variable-weight breathing
-  (Heebo 100..900 loaded in `index.html`). Used on the hero name and all
-  section headlines. IntersectionObserver-gated; screen readers get an
-  `sr-only` copy (never use `role="text"`, it fails the a11y lint that gates
-  deploy).
-- CSS additions in `global.css`/`tokens.css`: champagne gradient golds, hero
-  photo light ring, card hover lifts, gold selection and focus ring, mobile
-  stats cards, photo-first mobile hero.
+## Hosting
 
-When digesting a new standalone from Itay, sync **content only**; do not
-remove this layer. Tuning constants live at the top of the shader and in the
-KineticName props (base/boost/idle).
-
-## Working on content
-
-- Edit `src/data/content.ts`. It is typed; keep the shape, change the data.
-- Rich text: `{ t, hl }` → gold highlight, `{ t, strong }` → bold.
-- Images live in `public/img/` with order-based names (`hero.jpg`,
-  `work-1.jpg`, `work-2.jpg`, `work-3.jpg`) and are referenced via `lib/asset.ts`.
-- The "Fresh / TikTok" videos are a **coverflow carousel + in-page TikTok
-  lightbox** (`components/VideoCarousel.tsx`, mirrored in the standalone by a
-  vanilla `<script>` + a `.vc-lightbox` `<dialog>`). Each `workSamples` entry
-  needs a numeric `videoId` (the lightbox player id); resolve it from the TikTok
-  share link via oEmbed. Adding a video = one `content.ts` entry + a
-  `public/img/work-N.jpg`. Don't change the carousel structure without checking
-  with Bar (it's part of the standalone↔mirror contract).
-
-## Syncing from the standalone
-
-Run the `digest-standalone` skill (`.claude/skills/`). It extracts images and
-prints an inventory via `npm run digest -- <path>`, then you update
-`content.ts` to match. See that skill's `references/mapping.md`.
-
-## Verify
-
-```bash
-npm run lint && npm run build
-```
-
-`npm run lint` runs jsx-a11y + react-hooks and **gates deploy** — keep it green.
-
-## Deploy
-
-Push to `main` → `.github/workflows/deploy.yml` lints, builds, publishes to
-Pages. One-time: repo Settings → Pages → Source → GitHub Actions. Live at
-`https://barmoshe.github.io/itay-shechter-portfolio/`.
+Vercel, building from this repo's `main` branch (settings in `vercel.json`).
+Domain `itayshechter.com` is registered at GoDaddy. Moving the site or domain
+between accounts: see `HANDOFF.md`.

@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://barmoshe.github.io/itay-shechter-portfolio/sitemap.xml

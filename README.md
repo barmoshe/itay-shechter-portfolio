@@ -1,107 +1,22 @@
-# itay-shechter-portfolio
+# itayshechter.com
 
-A React mirror of Itay Shechter's portfolio. Vite + React 19 + TypeScript,
-deployed to GitHub Pages.
+Itay Shechter's portfolio: Social Media Lead. One page, Hebrew, right-to-left.
 
-## The model: standalone HTML is the source of truth
+## How it works
 
-Itay maintains his portfolio as a **single standalone HTML file** and edits it
-with Claude (no coding required). This repo is a **mirror** of that file: the
-same look and copy, rebuilt as a modern React app so it deploys cleanly and
-stays maintainable.
+- `index.html` is the whole site in one file: copy, styles, behaviour and images
+  (embedded as base64). Open it in any browser to see the site.
+- On every push to `main`, Vercel runs `node build.mjs`, which publishes a faster
+  copy from `dist/`: the embedded images become separate cached files and load
+  lazily. No dependencies, nothing to install.
+- `img/og.jpg` is the image shown when the link is shared (1200x630).
+  `robots.txt` and `sitemap.xml` point at `https://itayshechter.com/`.
 
-> **Mirror-side design layer (2026-06-10):** the React mirror now carries a
-> visual layer that is NOT in Itay's standalone HTML: a living WebGL gold-haze
-> background (`src/components/ShaderBackground.tsx`), kinetic variable-weight
-> typography on the hero name and section headers (`src/components/KineticName.tsx`,
-> Heebo variable font in `index.html`), gradient golds and hover polish in the
-> CSS, and a mobile interaction model (scroll-driven light, tap pulses,
-> autonomous ambience). A future digest from the standalone must preserve this
-> layer; it lives in components/styles, not in `content.ts`.
+## Updating the site
 
-```
-Itay edits standalone.html  ─▶  he sends an update  ─▶  npm run digest -- <path>
-                                                            │
-                        ┌────────────────────────────────────┴───────────────┐
-                        ▼                                                      ▼
-              public/img/*  (automatic)                       src/data/content.ts  (Claude updates)
-                                                                      │
-                                                              React renders the site
-                                                                      │
-                                                       git push ─▶ GitHub Actions ─▶ Pages
-```
+Edit `index.html` (with Claude, see `CLAUDE.md`), check it in a browser, push to
+`main`. Vercel publishes it in about a minute.
 
-The standalone HTML is **not** committed here. When Itay sends a new version,
-save it anywhere and run the digest (below).
+## Moving it to your own accounts
 
-## Develop
-
-```bash
-npm install
-npm run dev        # local dev server
-npm run lint       # eslint (a11y + hooks) — also gates deploy
-npm run build      # type-check + production build to dist/
-npm run preview    # serve the production build
-```
-
-## Syncing from Itay's HTML
-
-When Itay sends an updated `itay-shechter-portfolio-standalone.html`:
-
-```bash
-npm run digest -- /path/to/itay-shechter-portfolio-standalone.html
-```
-
-This extracts the images and prints a structural inventory. Then ask Claude to
-**run the `digest-standalone` skill** (in `.claude/skills/`) to update
-`src/data/content.ts` to match the new copy, and verify with `npm run build`.
-
-The site content lives entirely in `src/data/content.ts`. Components render from
-it; they rarely need to change.
-
-## Deploy (GitHub Pages)
-
-Pushing to `main` triggers `.github/workflows/deploy.yml`, which lints, builds,
-and publishes `dist/` to Pages.
-
-One-time setup on the GitHub repo: **Settings → Pages → Source → GitHub
-Actions**. After that, every push to `main` deploys automatically (about 1-2
-minutes). Live at: `https://barmoshe.github.io/itay-shechter-portfolio/`.
-
-The Vite `base` is `/itay-shechter-portfolio/` so asset URLs resolve under that
-subpath. `public/.nojekyll` keeps Pages from stripping build asset folders.
-
-## Project rules
-
-- No em-dashes (`—`) and no emoji anywhere — use inline SVG icons. The digest
-  script checks the source HTML for both.
-- CSS is ported 1:1 from the standalone as design tokens
-  (`src/styles/tokens.css`) plus component styles (`src/styles/global.css`).
-- The site is RTL Hebrew (`<html lang="he" dir="rtl">`).
-
-## Layout
-
-```
-src/
-  data/content.ts        all copy + links (the thing the digest updates)
-  styles/tokens.css      :root design tokens + base reset (1:1 from standalone)
-  styles/global.css      component styles (1:1 from standalone)
-  components/            Nav, Hero, TimelineAccordion, ExperienceSection, VideoCarousel, Skills, Contact, ContactModal, Footer, ProgressBar, icons, RichText
-  hooks/                 useScrollProgress, useReveal
-  lib/asset.ts           base-path-aware asset URLs
-.claude/skills/digest-standalone/   the sync skill (SKILL.md, scripts/digest.mjs, references/mapping.md)
-.github/workflows/deploy.yml        CI/CD to GitHub Pages
-```
-
-## The video carousel
-
-The "Fresh / TikTok" section renders its vertical videos as a **coverflow
-carousel** (`components/VideoCarousel.tsx`) with an in-page **TikTok lightbox**
-(the official `tiktok.com/player/v1/<id>` iframe, loaded only on click — nothing
-from TikTok loads until a visitor presses play). Swipe / drag, arrows, dots, and
-keyboard all navigate; it starts on the middle card so the coverflow is
-symmetric. Each sample in `content.ts` carries a numeric `videoId`. The
-standalone HTML mirrors all of this with a small vanilla `<script>` plus a
-`.vc-lightbox` `<dialog>`, so the two stay in sync. Resolve a new video's
-`videoId` from its TikTok share link via oEmbed
-(`https://www.tiktok.com/oembed?url=<link>`), which also yields its poster image.
+See `HANDOFF.md`: GitHub, Vercel, and pointing the GoDaddy domain.
