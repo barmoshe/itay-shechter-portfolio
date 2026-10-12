@@ -16,6 +16,41 @@ AI edits this repo. Every push to `main` deploys on its own.
   - `main` is the live site.
   - A build that fails never replaces the live site.
 
+## Talking to the person asking (read this first)
+
+The person asking is usually Itay, and he is not technical. He writes short, plain
+requests like "make the phone glow a little when I hover it" or "change my TikTok
+followers to 160K". This file tells you where everything is, so work it out yourself.
+
+- **Reply in his language** (usually Hebrew), short and friendly, second person singular.
+- **No technical words, ever.** Never say branch, commit, pull request, PR, merge, main,
+  deploy, build, CI, CSS, file names or line numbers. Say "the change", "a preview",
+  "your live website".
+- **Don't ask him technical questions.** If the request is unclear, ask about what he
+  wants to see ("brighter, or just a softer glow?"), never about how to do it.
+- **Problems are yours.** If a check fails, fix it before you show him anything. Don't
+  paste error messages to him.
+
+### Every change goes: preview, then his yes, then live
+
+1. **Make the change on a new branch and open a pull request to `main`.** Never write to
+   `main` directly.
+2. **Show him the preview.** Vercel builds the pull request in about a minute and posts
+   the preview link on it (a comment, or "View deployment" in its checks). Send it like:
+   "Here is your site with the change: <link>. Have a look, on your phone too. Should I
+   update your live website?"
+3. **Wait for a clear yes** ("yes", "כן", "תעלה", "מעולה, תעדכן"). Only then merge the pull
+   request into `main`, and tell him: "Done, your website is updated. It will be live in
+   about a minute: https://itayshechter.com".
+
+- **He wants something different after the preview:** change it on the same branch and
+  send the new preview again. Ask again before updating.
+- **He says no or drops it:** close the pull request and tell him his live website did not
+  change.
+- **No yes, no update.** Never merge without his answer to the preview, even for a tiny fix.
+- **You can't see the preview link:** give him the pull request link and say "open this
+  and tap 'View deployment' to see the preview".
+
 ## Where things live
 
 | You want to change | Edit this |
@@ -94,7 +129,7 @@ elegant", is fine when Itay or Bar asks for it. Do it like this:
 - The phone: keep `transition` and the resting `transform` on `.phone-frame`. On desktop the
   phone sits turned a little (`rotateY(-6deg) rotateX(2deg)`) and flattens on hover; pressing it
   tilts it (the script sets `transform` inline). Check both a desktop width and a 390px phone.
-- Prefer a branch + pull request, so the change gets a Vercel preview link before it goes live.
+- Go through the preview flow at the top ("Every change goes: preview, then his yes, then live").
 
 ## House rules
 
@@ -126,11 +161,10 @@ quotes, commas and brackets in `site.ts`, and change only what was asked.
 
 ## How changes go live
 
-- **Pull request (preferred for anything beyond a small text fix):** branch, commit,
-  open a PR to `main`. Vercel comments a preview link; Itay checks it on his phone
-  and merges.
-- **Direct commit to `main`:** fine for a small text fix. It is live in about a minute.
-  If the build fails, the previous version stays live.
+- **Always a pull request**, with the preview and the yes described at the top. Merging
+  to `main` puts it live in about a minute. If the build fails, the previous version
+  stays live.
+- **Direct commit to `main`:** only when Bar asks for it himself.
 - **Undo:** revert the commit on GitHub, or in Vercel promote the previous deployment.
 
 Commit messages: short, in English or Hebrew, saying what changed ("Update TikTok
