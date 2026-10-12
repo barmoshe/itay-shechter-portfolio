@@ -24,7 +24,8 @@ AI edits this repo. Every push to `main` deploys on its own.
 | A photo or video thumbnail | the file in `src/assets/` + its `import` at the top of `site.ts` |
 | Share image for WhatsApp/Facebook links | `public/img/og.jpg` (1200x630) |
 | The shape of the content (a new field) | `src/content/types.ts`, then the component in `src/components/` |
-| Layout or look | `src/styles/` (ask Itay first, see "Keep the design") |
+| Layout or look | `src/styles/` (only when Itay or Bar asks for a design change, see "Design tweaks") |
+| The V1 phone mockup (frame, edges, shadow, island, status bar) | `src/styles/sections/v1.css`, block `/* the phone */`; phone sizes for tablets and phones are at the end of the file (`max-width: 820px` / `480px`) |
 | Animations, smoke background | `src/effects/` (don't, unless that is the task) |
 
 The order of sections on the page is in `src/app/page.tsx`. Page title, description and
@@ -84,6 +85,17 @@ of the names in `src/components/ui/Icon.tsx` (`sparkles`, `send`, `video`, `spro
 `site.ts` and reused by the contact section and the popup. WhatsApp is the
 `wa.me/972...` link in `contactModal.options`.
 
+**Design tweaks (only when asked).** Small visual polish, such as "make the phone frame more
+elegant", is fine when Itay or Bar asks for it. Do it like this:
+- One small step per commit, a few CSS properties at most, starting from the current values (the
+  current look is good; aim for "slightly better", not a redesign).
+- Use the colours in `src/styles/tokens.css` (`--gold`, `--gold-glow`, ...). Keep everything subtle.
+- Don't rename classes or change components; don't touch `src/effects/`.
+- The phone: keep `transition` and the resting `transform` on `.phone-frame`. On desktop the
+  phone sits turned a little (`rotateY(-6deg) rotateX(2deg)`) and flattens on hover; pressing it
+  tilts it (the script sets `transform` inline). Check both a desktop width and a 390px phone.
+- Prefer a branch + pull request, so the change gets a Vercel preview link before it goes live.
+
 ## House rules
 
 - **No em-dashes** (the long dash). Use a comma, a period or parentheses. The short
@@ -127,12 +139,15 @@ follower count").
 ## For assistants that can only read (chat with a GitHub connector)
 
 If you can read the repo but not write to it:
-1. Find the exact lines to change in `src/content/site.ts`.
-2. Give Itay the old text and the new text, in a code block, with the line numbers.
-   If that's simpler, give the whole updated section.
-3. Tell him to open `src/content/site.ts` on github.com, press the pencil, make
-   the change, and press "Commit changes".
-4. Keep it to one file when you can. Images need the GitHub "Add file" upload,
-   so explain that step by step.
+1. Find the exact lines to change: `src/content/site.ts` for content, the CSS file
+   named above for a design tweak.
+2. Give the old text and the new text, in a code block, with the file path and line
+   numbers. If that's simpler, give the whole updated block (for CSS, the whole rule).
+3. Tell them to open that file on github.com, press the pencil, make the change, and
+   press "Commit changes". For anything beyond a text fix, choose "Create a new branch
+   for this commit and start a pull request": Vercel then posts a preview link on the
+   pull request, and "Merge" publishes it.
+4. Keep it to one file and one step at a time. Images need the GitHub "Add file"
+   upload, so explain that step by step.
 
 If your connector can write, commit or open a pull request yourself, as above.
